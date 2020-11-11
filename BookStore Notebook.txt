@@ -1,0 +1,15 @@
+操作日志不要读一行写文件一行！！！会TLE！！！在所有操作读完后/操作累计一定数量后写入文件
+用一个queue存入所有操作！
+
+
+Block
+块存储格式，单位char
+int nxt 4
+int pre 4
+int num 4
+Node array[320];
+    int offset 4
+    int isdel 4
+    char[] str 64(改成4的倍数防止浪费，理由同上条)
+    单计72
+总计23052

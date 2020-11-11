@@ -1,0 +1,14 @@
+//
+// Created by PaperL on 2020/11/9.
+//
+
+#ifndef BOOKSTORE_SIRIUSNEO_USERMANAGER_H
+#define BOOKSTORE_SIRIUSNEO_USERMANAGER_H
+
+
+class usermanager {
+
+};
+
+
+#endif //BOOKSTORE_SIRIUSNEO_USERMANAGER_H
