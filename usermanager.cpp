@@ -3,3 +3,10 @@
 //
 
 #include "usermanager.h"
+
+UserManager::UserManager() {
+    userStack.clear();
+    userNumber = 0;
+
+}
+

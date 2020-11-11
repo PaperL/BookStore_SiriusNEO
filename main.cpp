@@ -1,6 +1,7 @@
 #include<iostream>
 #include<string.h>
 #include "blocklist.h"
+#include "usermanager.h"
 
 using namespace std;
 blocklist isbn_cmd("isbn.bin");
