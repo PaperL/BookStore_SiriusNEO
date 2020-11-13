@@ -19,6 +19,8 @@ class Node {
 public:
     Node();
 
+    Node(int offset, string s);
+
     int offset;
     int isdel;
     char str[64];
@@ -43,18 +45,20 @@ private:
 
     inline int nextBlock(int offset);
 
-public:
-    blocklist(string arg);
-
     void delBlock(int offset);
 
     void mergeBlock(int offset1, int offset2);
 
     void splitBlock(int offset, int index);
 
+public:
+    blocklist(string arg);
+
     void findNode(string key, vector<Node> &array);
 
     void addNode(Node node);
+
+    int deleteNode(string key);
 };
 
 

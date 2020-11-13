@@ -10,6 +10,13 @@ Node::Node() {
     memset(str, 0, sizeof(str));
 }
 
+Node::Node(int arg1, string arg2) {
+    offset = arg1;
+    isdel = 0;
+    memset(str, 0, sizeof(str));
+    strcpy(str, arg2.c_str());
+}
+
 bool Node::operator<(const Node &x) const {
     string s1 = str, s2 = x.str;
     return s1 < s2;
@@ -36,9 +43,9 @@ blocklist::blocklist(string arg) {//构造函数
     fi.open(fname, ios::in | ios::binary);
     if (!fi.is_open()) {
         fi.close();
-        cout << "Discover file \"" << fname << "\" is missing." << endl;
+        cout << "Discover index file \"" << fname << "\" is missing." << endl;
         cout << "Creating blank file \"" << fname << "\" ..." << endl;
-        fi.open(fname, ios::out | ios::trunc);
+        fi.open(fname, ios::out | ios::trunc | ios::binary);
     }
     fi.close();
 }
@@ -144,7 +151,7 @@ void blocklist::findNode(string key, vector<Node> &array) {
             lastp = nodep;
             nodep = nextBlock(nodep);
             if (nodep == -1)break;
-            fi.seekg(nodep + 20, ios::beg);//读入nodep块的第一个Node.strh
+            fi.seekg(nodep + 20, ios::beg);//读入nodep块的第一个Node.str
             fi.read(reinterpret_cast<char *>(temps), 64);
             s = temps;
         }
@@ -170,8 +177,8 @@ void blocklist::findNode(string key, vector<Node> &array) {
     fi2.close();
 }
 
-void blocklist::addNode(Node node) {//todo 找位置可以二分
-    //todo 尽量不要再把任何class读写拆开了！！！
+void blocklist::addNode(Node node) {//找东西优先二分
+    //尽量不要把任何class读写拆开
     fi.open(fname, ios::in | ios::binary);
     fo.open(fname, ios::in | ios::out | ios::binary);
     fi2.open(fname, ios::in | ios::binary);
@@ -227,4 +234,61 @@ void blocklist::addNode(Node node) {//todo 找位置可以二分
 
     fi.close(), fo.close();
     fi2.close();
+}
+
+int blocklist::deleteNode(string key) {
+    //主要代码来自 int blocklist::addNode
+    fi.open(fname, ios::in | ios::binary);
+    fi2.open(fname, ios::in | ios::binary);
+
+    fi2.seekg(0, ios::end);//文件末指针
+    fi.seekg(20, ios::beg);//第一个块的array[0].str起始位置
+    if (fi.tellg() < fi2.tellg()) {//遍历查找node所在块
+        string s;
+        char temps[64];
+        fi.read(reinterpret_cast<char *>(temps), 64);//读入第一个块第一个Node.str
+        s = temps;
+
+        int lastp = -1;//lastp为node应在块的位置
+        int nodep = 0;//nodep为正在遍历的块的位置
+        while (s <= key) {
+            lastp = nodep;
+            nodep = nextBlock(nodep);
+            if (nodep == -1)break;
+            fi.seekg(nodep + 20, ios::beg);//读入nodep块的第一个Node.str
+            fi.read(reinterpret_cast<char *>(temps), 64);
+            s = temps;
+        }
+        if (lastp != -1) {
+            fi.seekg(lastp, ios::beg);//指向node可能所在块头
+
+            Node tempNode;//开一个空Node存入key，用于lower_bound
+            strcpy(tempNode.str, key.c_str());
+
+            Block tempBlock;//读入整个块
+            fi.seekg(lastp, ios::beg);
+            fi.read(reinterpret_cast<char *>(&tempBlock), sizeof(Block));
+
+            int pos;//用二分lower_bound找到第一个Node[i].str大于等于key的i
+            pos = lower_bound(tempBlock.array, tempBlock.array + tempBlock.num, tempNode) - tempBlock.array;
+
+            //如果找到符合要求的Node，删除，并写回文件
+            while (tempBlock.array[pos].str == key) {
+                if (tempBlock.array[pos].isdel == 0) {
+                    int temp = 1;
+                    fo.open(fname, ios::in | ios::out | ios::binary);
+                    fo.seekp(16 + pos * sizeof(Node), ios::beg);//todo 这里很可能会有bug
+                    fo.write(reinterpret_cast<char *>(&temp), 4);
+                    fo.close();
+                    fi.close();
+                    fi2.close();
+                    return 0;//操作成功
+                }
+                ++pos;
+            }
+        }
+    }
+    fi.close();
+    fi2.close();
+    return -1;//操作失败
 }

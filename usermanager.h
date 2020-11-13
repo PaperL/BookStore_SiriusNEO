@@ -4,6 +4,8 @@
 #ifndef BOOKSTORE_SIRIUSNEO_USERMANAGER_H
 #define BOOKSTORE_SIRIUSNEO_USERMANAGER_H
 
+#include <fstream>
+#include <string.h>
 #include <string>
 #include <vector>
 
@@ -11,21 +13,34 @@
 
 using namespace std;
 
-extern blocklist id_cmd;
+blocklist id_cmd("id.bin");
 
 class User {
 public:
     int privilege;
     int curBook;
-    string id, passwd, name;
+    char id[32];
+    char passwd[32];
+    char name[32];
+
+    User();
 };
 
 class UserManager {
 private:
-public:
+    const string fname = "users.dat";
+    fstream fi, fo, fip, fop;
+
     int userNumber;
     vector<User> userStack;
 
+    inline bool sCheck(string arg);
+
+    //inline void fwriteUser(int pri,string id,string passwd,string name);
+
+    inline User freadUser(int offset);
+
+public:
     UserManager();
 
     void su(string id, string passwd);
@@ -36,7 +51,7 @@ public:
 
     void useradd(string id, string passwd, int privilege, string name);
 
-    void repwd(string id, string newpws, string oldpwd);
+    void repwd(string id, string oldpwd, string newpwd);
 
     void del(string id);
 };

@@ -1,7 +1,6 @@
 操作日志不要读一行写文件一行！！！会TLE！！！在所有操作读完后/操作累计一定数量后写入文件
 用一个queue存入所有操作！
 
-
 Block
 块存储格式，单位char
 int nxt 4
@@ -13,3 +12,11 @@ Node array[320];
     char[] str 64(改成4的倍数防止浪费，理由同上条)
     单计72
 总计23052
+
+文档改动（修订）
+reg函数缺少privilege参数
+
+userStack不再使用vector类型，改用stack
+去除userNumber变量
+
+各种要写入文件的类的非数组的变量均优先使用int类型
