@@ -13,8 +13,6 @@
 
 using namespace std;
 
-blocklist id_cmd("id.bin");
-
 class User {
 public:
     int privilege;
@@ -28,13 +26,20 @@ public:
 
 class UserManager {
 private:
-    const string fname = "users.dat";
+    const string fname;
     fstream fi, fo, fip, fop;
+
+    enum userStringTypeEnum {
+        stringId, stringPasswd, stringName
+    };
 
     int userNumber;
     vector<User> userStack;
 
-    inline bool sCheck(string arg);
+    blocklist id_cmd = blocklist("id.bin");
+    //blocklist id_cmd("id.bin"); 这种写法会有歧义,编译器无法判断是成员变量还是成员函数
+
+    inline bool userStringCheck(userStringTypeEnum userStringType, string arg);
 
     //inline void fwriteUser(int pri,string id,string passwd,string name);
 
@@ -43,17 +48,25 @@ private:
 public:
     UserManager();
 
+    bool privilegeCheck(int privilegeNeed);
+
+    inline int userSelect();
+
+    inline void changeSelect(int offset);
+
     void su(string id, string passwd);
 
     void logout();
 
     void reg(string id, string passwd, string name);
 
-    void useradd(string id, string passwd, int privilege, string name);
+    void useradd(string id, string passwd, int privilege, string name, int registerFlag = 0);
 
     void repwd(string id, string oldpwd, string newpwd);
 
     void del(string id);
+
+
 };
 
 

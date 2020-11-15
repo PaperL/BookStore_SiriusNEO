@@ -38,8 +38,8 @@ inline int blocklist::nextBlock(int offset) {//获取下一个块的文件内绝
 }
 
 
-blocklist::blocklist(string arg) {//构造函数
-    fname = arg;
+blocklist::blocklist(string arg):fname(arg) {//构造函数
+    //const string fname = arg; //todo 现在的常量初始化大概是正确的吧
     fi.open(fname, ios::in | ios::binary);
     if (!fi.is_open()) {
         fi.close();
