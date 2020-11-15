@@ -30,15 +30,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3678d20-5d5d-4e0a-8adc-3d69566b594a" name="Default Changelist" comment="1115evening&#10;代码总量已经来到了1.2k行&#10;就要写完了，就要开始debug了......">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BookStore Notebook.txt" beforeDir="false" afterPath="$PROJECT_DIR$/BookStore Notebook.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blocklist.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/blocklist.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blocklist.h" beforeDir="false" afterPath="$PROJECT_DIR$/blocklist.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore.h" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/usermanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usermanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +68,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -92,6 +94,7 @@
       <workItem from="1605346035555" duration="16140000" />
       <workItem from="1605418892332" duration="12745000" />
       <workItem from="1605431674406" duration="498000" />
+      <workItem from="1605453573390" duration="4163000" />
     </task>
     <servers />
   </component>

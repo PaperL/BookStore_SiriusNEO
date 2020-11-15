@@ -12,7 +12,7 @@ User::User() {
     memset(name, 0, sizeof(name));
 }
 
-UserManager::UserManager():fname("users.dat") {
+UserManager::UserManager() : fname("users.dat") {
     //初始只有一个0权限空账户
     User tempUser;
     tempUser.privilege = 0;
@@ -77,22 +77,19 @@ void UserManager::su(string id, string passwd) {
         printf("Invalid\n");
         return;
     }
-    vector<Node> tempVec;
+    vector<int> tempVec;
     id_cmd.findNode(id, tempVec);//查找是否有该用户
     if (tempVec.empty()) {
         printf("Invalid\n");
         return;
     }
-    char findFlag = 0;
+    //todo 可删除调试代码
+    if (tempVec.size() > 1)
+        printf("UserManager::su Error! 发现相同id用户");
+
     User tempUser;
-    for (int i = tempVec.size() - 1; i >= 0; --i) {
-        if (tempVec[i].isdel == 0) {
-            findFlag = 1;
-            tempUser = freadUser(tempVec[i].offset);
-            break;
-        }
-    }
-    if (findFlag == 1 && passwd == tempUser.passwd) {//检查密码，加入UserStack
+    tempUser = freadUser(tempVec[0]);
+    if (passwd == tempUser.passwd) {//检查密码，加入UserStack
         tempUser.curBook = -1;
         userStack[userNumber++] = tempUser;
     }//如果目前没有该账户或密码错误
@@ -122,22 +119,16 @@ void UserManager::useradd(string id, string passwd, int privilege, string name, 
         return;//输入不合法
     }
 
-    vector<Node> tempVec;
+    vector<int> tempVec;
     User tempUser;
     id_cmd.findNode(id, tempVec);//查找是否有该用户
-    if (!tempVec.empty()) {
-        char findFlag = 0;
+    if (!tempVec.empty()) {//存在同id账户
+        //todo 可删除调试代码
+        if (tempVec.size() > 1)
+            printf("UserManager::su Error! 发现相同id用户");
 
-        for (int i = tempVec.size() - 1; i >= 0; --i) {
-            if (tempVec[i].isdel == 0) {
-                findFlag = 1;
-                break;
-            }
-        }
-        if (findFlag == 1) {//存在同id用户
-            printf("Invalid\n");
-            return;
-        }
+        printf("Invalid\n");
+        return;
     }
     //账户写入文件
     tempUser.privilege = privilege;
@@ -166,24 +157,20 @@ void UserManager::repwd(string id, string newpwd, string oldpwd) {
         return;
     }
 
-    vector<Node> tempVec;
+    vector<int> tempVec;
     id_cmd.findNode(id, tempVec);//查找是否有该用户
-    if (tempVec.empty()) {
+    if (tempVec.empty()) {//没有该账户
         printf("Invalid\n");
         return;
     }
+    //todo 可删除调试代码
+    if (tempVec.size() > 1)
+        printf("UserManager::repwd Error! 找到多个同id用户");
+
     int offset;
-    char findFlag = 0;
     User tempUser;
-    for (int i = tempVec.size() - 1; i >= 0; --i) {
-        if (tempVec[i].isdel == 0) {
-            findFlag = 1;
-            offset = tempVec[i].offset;
-            tempUser = freadUser(offset);
-            break;
-        }
-    }
-    if (findFlag == 0)return;//没有该账户
+    offset = tempVec[0];
+    tempUser = freadUser(offset);
     //当前登陆用户如果是非root用户需验证密码,root用户不用
     //高权限用户低权限用户，提供密码，但是密码错误，为Invalid。
     if (userStack[userNumber - 1].privilege != 7 && oldpwd == tempUser.passwd) {

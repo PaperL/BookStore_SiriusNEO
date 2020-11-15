@@ -38,7 +38,7 @@ inline int blocklist::nextBlock(int offset) {//获取下一个块的文件内绝
 }
 
 
-blocklist::blocklist(string arg):fname(arg) {//构造函数
+blocklist::blocklist(string arg) : fname(arg) {//构造函数
     //const string fname = arg; //todo 现在的常量初始化大概是正确的吧
     fi.open(fname, ios::in | ios::binary);
     if (!fi.is_open()) {
@@ -132,7 +132,7 @@ void blocklist::splitBlock(int offset, int leftNum) {//leftNum为offset块保留
     fi2.close(), fo2.close();
 }
 
-void blocklist::findNode(string key, vector<Node> &array) {
+void blocklist::findNode(string key, vector<int> &array) {
     fi.open(fname, ios::in | ios::binary);
     fi2.open(fname, ios::in | ios::binary);
 
@@ -169,8 +169,8 @@ void blocklist::findNode(string key, vector<Node> &array) {
             pos = lower_bound(tempBlock.array, tempBlock.array + tempBlock.num, tempNode) - tempBlock.array;
 
             //将符合要求的Node加入array
-            while (tempBlock.array[pos].str == key)
-                array.push_back(tempBlock.array[pos++]);
+            while (tempBlock.array[pos].isdel == 0 && tempBlock.array[pos].str == key)
+                array.push_back(tempBlock.array[pos++].offset);
         }
     }
     fi.close();

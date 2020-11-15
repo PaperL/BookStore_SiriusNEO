@@ -54,7 +54,7 @@ private:
 public:
     blocklist(string arg);
 
-    void findNode(string key, vector<Node> &array);
+    void findNode(string key, vector<int> &array);//todo 这边改了int
 
     void addNode(Node node);
 

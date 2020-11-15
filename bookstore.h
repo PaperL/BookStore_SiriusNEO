@@ -45,6 +45,12 @@ private:
     public:
         BookstoreFileManager();
 
+        inline void financeInit(int &tradeNum,double &income,double &outgo);
+
+        inline void financeBasicWrite(int &num,double &income,double &outgo);//本可以用const的，但是强制类型转换好像不行
+
+        inline void financeWrite(double &price,bool &sgn);//也可以用pair，但是没什么必要
+
         inline void freadBook(int offset, Book &arg);
 
         inline int fwriteBook(Book &arg);
@@ -74,7 +80,9 @@ private:
         stringISBN, stringBookName, stringAuthor, stringKeyword
     };
 
-    int bookNumber;
+    int tradeNumber;//总交易次数
+    double totIncome,totExpense;//总收入、总支出
+    int bookNumber;//图书总数
 
     inline void splitString(string &arg, string &ret, int keywordFlag = 0);
 
@@ -82,19 +90,19 @@ private:
 
     //inline Book freadBook(int offset);
 
-    inline void printBook(Book &arg);
+    inline void printBook(const Book &arg);
 
     void showLog(logTypeEnum logType);
 
     void addFinance(double price, bool sgn);
 
-    void showFinance(int time);
+    void showFinance(int time = -1);
 
     void import(int quantity, double price);
 
     void buy(string ISBN, int quantity);
 
-    int find(string ISBN);
+    int find(const string &ISBN);
 
     void findplus(findTypeEnum findType, string key, vector<int> &array);
 

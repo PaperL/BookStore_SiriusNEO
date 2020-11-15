@@ -40,6 +40,13 @@ Bookstore::BookstoreFileManager::BookstoreFileManager() :
         cout << "Discover index file \"" << fnameFinance << "\" is missing." << endl;
         cout << "Creating blank file \"" << fnameFinance << "\" ..." << endl;
         fi.open(fnameFinance, ios::out | ios::trunc | ios::binary);
+        //finance.dat开头应写入交易次数(int),总收入(double),总支出(double)
+        int tempInt = 0;
+        double tempDouble = 0;
+        fi.seekp(0, ios::beg);
+        fi.write(reinterpret_cast<char *>(&tempInt), sizeof(int));
+        fi.write(reinterpret_cast<char *>(&tempDouble), sizeof(double));
+        fi.write(reinterpret_cast<char *>(&tempDouble), sizeof(double));
     }
     fi.close();
     //检查log.dat
@@ -51,6 +58,35 @@ Bookstore::BookstoreFileManager::BookstoreFileManager() :
         fi.open(fnameLog, ios::out | ios::trunc | ios::binary);
     }
     fi.close();
+}
+
+inline void Bookstore::BookstoreFileManager::financeInit(int &tradeNum, double &income, double &outgo) {
+    //获取finance.dat开头数据tradeNumber,totIncome,totExpense
+    fi.open(fnameFinance, ios::in | ios::binary);
+    fi.seekg(0, ios::beg);
+    fi.read(reinterpret_cast<char *>(&tradeNum), sizeof(int));
+    fi.read(reinterpret_cast<char *>(&income), sizeof(double));
+    fi.read(reinterpret_cast<char *>(&outgo), sizeof(double));
+    fi.close();
+}
+
+inline void Bookstore::BookstoreFileManager::financeBasicWrite(int &num, double &income, double &outgo) {
+    //写入finance.dat开头数据tradeNumber,totIncome,totExpense
+    fo.open(fnameFinance, ios::in | ios::out | ios::binary);
+    fo.seekp(0, ios::beg);
+    fo.write(reinterpret_cast<char *>(&num), sizeof(int));
+    fo.write(reinterpret_cast<char *>(&income), sizeof(double));
+    fo.write(reinterpret_cast<char *>(&outgo), sizeof(double));
+    fo.close();
+}
+
+inline void Bookstore::BookstoreFileManager::financeWrite(double &price, bool &sgn) {
+    //在finance.dat末写入一笔交易
+    fo.open(fnameFinance, ios::in | ios::out | ios::binary);
+    fo.seekp(0, ios::end);
+    fo.write(reinterpret_cast<char *>(&price), sizeof(double));
+    fo.write(reinterpret_cast<char *>(&sgn), sizeof(bool));
+    fo.close();
 }
 
 inline void Bookstore::BookstoreFileManager::freadBook(int offset, Book &arg) {
@@ -83,6 +119,7 @@ inline void Bookstore::BookstoreFileManager::fwriteBook(int offset, Book &arg) {
 
 Bookstore::Bookstore() {
     bookNumber = 0;
+    bookstoreFile_cmd.financeInit(tradeNumber, totIncome, totExpense);
 }
 
 inline void Bookstore::splitString(string &arg, string &ret, int keywordFlag) {//将arg拆分出第一部分ret
@@ -137,29 +174,98 @@ Bookstore::bookStringCheck(bookStringTypeEnum bookStringType, const string &arg)
 
 //inline Book Bookstore::freadBook(int offset) {}
 
-inline void Bookstore::printBook(Book &arg) {
-
+inline void Bookstore::printBook(const Book &arg) {
+    printf("%s %s %s %s %.2lf %d\n", arg.ISBN, arg.name, arg.author, arg.keyword, arg.price, arg.quantity);
 }
 
-void Bookstore::showLog(logTypeEnum logType) {}
+void Bookstore::showLog(logTypeEnum logType) {
+    //todo 待实现
+    if (logType == reportLog) {
 
-void Bookstore::addFinance(double price, bool sgn) {}
+    }
+}
 
-void Bookstore::showFinance(int time) {}
+void Bookstore::addFinance(double price, bool sgn) {//sgn:true支出,false收入
+    ++tradeNumber;
+    if (sgn)totExpense += price;
+    else totIncome += price;
+    bookstoreFile_cmd.financeWrite(price, sgn);
+    bookstoreFile_cmd.financeBasicWrite(tradeNumber,totIncome,totExpense);
+}
+
+void Bookstore::showFinance(int time) {
+    if (!user_cmd.privilegeCheck(7)) {//没有足够权限(3)
+        printf("Invalid\n");
+        return;
+    }//todo 待实现
+    if (time == -1) {//输出总收入支出
+
+    } else {//输出最近time次收入支出
+
+    }
+}
 
 void Bookstore::import(int quantity, double price) {
     //select为-1时不能进行modify和import操作
     //在su时已经保证初始select为-1
     //import的price是总价而非单价
+    if (user_cmd.userSelect() == -1 || !user_cmd.privilegeCheck(3)) {//未选中Book或没有足够权限(3)
+        printf("Invalid\n");
+        return;
+    }
+    if (quantity < 0 || price < 0) {
+        printf("Invalid\n");
+        return;
+    }
+    addFinance(price, true);//支出
+    //修改Book.quantity
+    Book tempBook;
+    bookstoreFile_cmd.freadBook(user_cmd.userSelect(), tempBook);
+    tempBook.quantity += quantity;
+    bookstoreFile_cmd.fwriteBook(user_cmd.userSelect(), tempBook);
 }
 
 void Bookstore::buy(string ISBN, int quantity) {
     //todo buy指令输出购买花费，保留两位小数
+    if (quantity < 0 && !user_cmd.privilegeCheck(1)) {//购买书数为负数或没有足够权限(1)
+        printf("Invalid\n");
+        return;
+    }
+    int temp = find(ISBN);
+    if (temp != -1) {
+        //修改Book.quantity
+        Book tempBook;
+        bookstoreFile_cmd.freadBook(user_cmd.userSelect(), tempBook);
+        if (tempBook.quantity < quantity) {//库存不够
+            printf("Invalid\n");
+            return;
+        }
+        addFinance(quantity * tempBook.price, false);//todo 为什么这边没有引用addFinance,clion的bug？
+        tempBook.quantity -= quantity;
+        bookstoreFile_cmd.fwriteBook(user_cmd.userSelect(), tempBook);
+        printf("%.2lf\n", tempBook.price * quantity);//输出价格
+    } else printf("Invalid\n");
 }
 
-int Bookstore::find(string ISBN) {}
+int Bookstore::find(const string &ISBN) {
+    vector<int> tempVec;
+    isbn_cmd.findNode(ISBN, tempVec);//如果这边有多个Node就出bug了,但愿不会
+    //todo 可删除调试用代码
+    if (tempVec.size() > 1)
+        printf("Bookstore::find Error! 索引中有ISBN相同的Book");
+    if (tempVec.size() == 1) return tempVec[0];
+    else return -1;
+}
 
-void Bookstore::findplus(findTypeEnum findType, string key, vector<int> &array) {}
+void Bookstore::findplus(findTypeEnum findType, string key, vector<int> &array) {
+    if (findType == findName) {
+        name_cmd.findNode(key, array);
+    } else if (findType == findAuthor) {
+        author_cmd.findNode(key, array);
+    } else {//findType == findKeyword
+        keyword_cmd.findNode(key, array);
+    }
+}
 
 void Bookstore::select(string ISBN) {
     if (!user_cmd.privilegeCheck(3) || !bookStringCheck(stringISBN, ISBN)) {//没有足够权限(7)
@@ -175,14 +281,22 @@ void Bookstore::select(string ISBN) {
 }
 
 void Bookstore::modify(int offset, string ISBN, string name, string author, string keyword, double price) {
+    if (user_cmd.userSelect() == -1 || !user_cmd.privilegeCheck(3)) {//未选中Book或没有足够权限(3)
+        printf("Invalid\n");
+        return;
+    }
     //price在operation中保证非负，-1表无值
     if (offset == -1 || !bookStringCheck(stringISBN, ISBN) || !bookStringCheck(stringBookName, name)
         || !bookStringCheck(stringAuthor, author)) {
         printf("Invalid\n");
         return;
     }
-    Book tempBook;
+    if (!ISBN.empty() && find(ISBN) != -1) {//如果设为已有ISBN则非法
+        printf("Inavalid\n");
+        return;
+    }
 
+    Book tempBook;
     bookstoreFile_cmd.freadBook(offset, tempBook);
     if (!ISBN.empty()) {
         isbn_cmd.deleteNode(tempBook.ISBN);
@@ -199,16 +313,15 @@ void Bookstore::modify(int offset, string ISBN, string name, string author, stri
         author_cmd.addNode(Node(offset, author));
         strcpy(tempBook.author, author.c_str());
     }
-    if (!keyword.empty()) {
+    if (!keyword.empty()) {//todo 正确性有待商榷的地方
         string temps, temps2;
-        temps = tempBoo
-        splitString(keyword, temps, 1);
-        while (!keyword.empty()) {
-            keyword_cmd.addNode(Node(offset, temps));
-            splitString(keyword, temps, 1);
+        temps2 = tempBook.keyword;//先把旧keyword索引内容删除
+        splitString(temps2, temps, 1);
+        while (!temps2.empty()) {
+            keyword_cmd.deleteNode(temps);
+            splitString(temps2, temps, 1);
         }
-
-        string temps;
+        //加入新Keyword索引
         splitString(keyword, temps, 1);
         while (!keyword.empty()) {
             keyword_cmd.addNode(Node(offset, temps));
@@ -365,7 +478,26 @@ void Bookstore::operation(string cmd) {
 
         splitString(cmd, arg0);
         if (!arg0.empty()) {
-            if (arg1.substr(0, 6) == "-ISBN=") {
+            //show finance
+            if (arg1.substr(0, 7) == "finance") {
+                splitString(arg1, arg2);
+                if (!arg2.empty()) {
+                    try {
+                        int temp = stoi(arg2);
+                        if (temp >= 0)
+                            showFinance(stoi(arg2));
+                        else
+                            printf("Invalid\n");
+                    }
+                    catch (exception tempException) {
+                        printf("Invalid\n");
+                    }
+                } else {
+                    showFinance();
+                }
+            }
+                // Book单关键词show
+            else if (arg1.substr(0, 6) == "-ISBN=") {
                 arg1 = arg1.substr(6, arg1.length() - 6);
                 int temp = find(arg1);
                 if (temp == -1)
@@ -388,9 +520,7 @@ void Bookstore::operation(string cmd) {
                 } else if (arg1.substr(0, 9) == "-keyword=") {
                     arg1 = arg1.substr(9, arg1.length() - 9);
                     findplus(findKeyword, arg1, tempArray);
-                }
-                    //不合法参数
-                else {
+                } else {//不合法参数
                     printf("Invalid\n");
                     invalidFlag = 1;
                 }
