@@ -4,12 +4,18 @@
 #ifndef BOOKSTORE_SIRIUSNEO_USERMANAGER_H
 #define BOOKSTORE_SIRIUSNEO_USERMANAGER_H
 
+#include <cstdio>
+#include <iostream>
 #include <fstream>
-#include <string.h>
-#include <string>
+
 #include <vector>
+#include <string>
+#include <string.h>
+
 
 #include "blocklist.h"
+
+#define PaperL_Debug
 
 using namespace std;
 
@@ -26,6 +32,9 @@ public:
 
 class UserManager {
 private:
+
+    blocklist id_cmd;
+
     const string fname;
     fstream fi, fo, fip, fop;
 
@@ -36,7 +45,7 @@ private:
     int userNumber;
     vector<User> userStack;
 
-    blocklist id_cmd = blocklist("id.bin");
+    //blocklist id_cmd = blocklist("id.bin");
     //blocklist id_cmd("id.bin"); 这种写法会有歧义,编译器无法判断是成员变量还是成员函数
 
     inline bool userStringCheck(userStringTypeEnum userStringType, string arg);
@@ -44,15 +53,16 @@ private:
     //inline void fwriteUser(int pri,string id,string passwd,string name);
 
     inline User freadUser(int offset);
+    //fwriteUser已直接在useadd和repwd中实现
 
 public:
     UserManager();
 
     bool privilegeCheck(int privilegeNeed);
 
-    inline int userSelect();
+    int userSelect();
 
-    inline void changeSelect(int offset);
+    void changeSelect(int offset);
 
     void su(string id, string passwd);
 

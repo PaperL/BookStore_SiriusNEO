@@ -5,22 +5,22 @@
 #ifndef BOOKSTORE_SIRIUSNEO_BOOKSTORE_H
 #define BOOKSTORE_SIRIUSNEO_BOOKSTORE_H
 
-#include <string.h>
+#include <cstdio>
+#include <iostream>
+
 #include <algorithm>
-#include <vector>
 #include <exception>
+
+#include <vector>
+#include <string>
+#include <string.h>
 
 #include "blocklist.h"
 #include "usermanager.h"
 
+#define PaperL_Debug
+
 using namespace std;
-
-blocklist isbn_cmd("isbn.bin");
-blocklist name_cmd("name.bin");
-blocklist author_cmd("author.bin");
-blocklist keyword_cmd("keyword.bin");
-
-blocklist finance_cmd("finance.dat");
 
 class Book {
 public:
@@ -38,6 +38,14 @@ public:
 
 class Bookstore {
 private:
+
+    blocklist isbn_cmd;
+    blocklist name_cmd;
+    blocklist author_cmd;
+    blocklist keyword_cmd;
+
+    UserManager user_cmd;
+
     class BookstoreFileManager {
     private:
         const string fnameBook, fnameFinance, fnameLog;
@@ -45,17 +53,30 @@ private:
     public:
         BookstoreFileManager();
 
-        inline void financeInit(int &tradeNum,double &income,double &outgo);
+        inline void financeInit(int &tradeNum, double &income, double &outgo);
 
-        inline void financeBasicWrite(int &num,double &income,double &outgo);//本可以用const的，但是强制类型转换好像不行
+        inline void financeBasicWrite(int &num, double &income, double &outgo);//本可以用const的，但是强制类型转换好像不行
 
-        inline void financeWrite(double &price,bool &sgn);//也可以用pair，但是没什么必要
+        inline void financeWrite(double &price, bool &sgn);//也可以用pair，但是没什么必要
+
+
+        inline void bookInit(int &bookNum);
+
+        inline void bookBasicWrite(int &bookNum);
 
         inline void freadBook(int offset, Book &arg);
+
+        inline void freadBook(vector<Book> &array);//读取所有图书信息
 
         inline int fwriteBook(Book &arg);
 
         inline void fwriteBook(int offset, Book &arg);
+
+
+
+        //此处输出功能原本应由 Bookstore::printBook 实现
+        //但是为了降低空间复杂度在此函数内实现输出
+
 
         vector<string> freadFinance();
 
@@ -65,8 +86,6 @@ private:
 
         void fwriteLog();
     } bookstoreFile_cmd;
-
-    UserManager user_cmd;
 
     enum logTypeEnum {
         reportMyself, reportEmployee, reportLog, reportFinance
@@ -81,7 +100,7 @@ private:
     };
 
     int tradeNumber;//总交易次数
-    double totIncome,totExpense;//总收入、总支出
+    double totIncome, totExpense;//总收入、总支出
     int bookNumber;//图书总数
 
     inline void splitString(string &arg, string &ret, int keywordFlag = 0);
@@ -100,15 +119,16 @@ private:
 
     void import(int quantity, double price);
 
-    void buy(string ISBN, int quantity);
+    void buy(const string &ISBN, const int &quantity);
 
     int find(const string &ISBN);
 
-    void findplus(findTypeEnum findType, string key, vector<int> &array);
+    void findplus(findTypeEnum findType, const string &key, vector<int> &array);
 
-    void select(string ISBN);
+    void select(const string &ISBN);
 
-    void modify(int offset, string ISBN, string name, string author, string keyword, double price);
+    void modify(const int &offset, const string &ISBN, const string &name,
+                const string &author, string keyword, const double &price);
 
 public:
     Bookstore();

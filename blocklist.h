@@ -4,12 +4,17 @@
 #ifndef BOOKSTORE_SIRIUSNEO_BLOCKLIST_H
 #define BOOKSTORE_SIRIUSNEO_BLOCKLIST_H
 
-#include <algorithm>
-#include <vector>
+#include <cstdio>
 #include <iostream>
-#include <string>
 #include <fstream>
+
+#include <algorithm>
+
+#include <vector>
+#include <string>
 #include <string.h>
+
+#define PaperL_Debug
 
 #define SIZE 320
 
@@ -18,14 +23,13 @@ using namespace std;
 class Node {
 public:
     int offset;
-    int isdel;
     char str[64];
 
     bool operator<(const Node &x) const;
 
     Node();
 
-    Node(int offset, string s);
+    Node(const int &arg1, const string &arg2) ;
 };
 
 class Block {
@@ -49,16 +53,16 @@ private:
 
     void mergeBlock(int offset1, int offset2);
 
-    void splitBlock(int offset, int index);
+    void splitBlock(int offset, int leftNum);
 
 public:
-    blocklist(string arg);
+    blocklist(const string &arg);
 
-    void findNode(string key, vector<int> &array);//todo 这边改了int
+    void findNode(const string &key, vector<int> &array);
 
-    void addNode(Node node);
+    void addNode(const Node &node);
 
-    int deleteNode(string key);
+    int deleteNode(const Node &node);
 };
 
 

@@ -5,14 +5,20 @@
 #include "usermanager.h"
 
 User::User() {
+#ifdef PaperL_Debug
+    cout << "In Constructor \"User\" :" << endl;
+#endif
     privilege = -1;
     curBook = -1;
-    memset(id, 0, sizeof(id));
-    memset(passwd, 0, sizeof(passwd));
-    memset(name, 0, sizeof(name));
+    memset(id, 0, sizeof(char) * 32);
+    memset(passwd, 0, sizeof(char) * 32);
+    memset(name, 0, sizeof(char) * 32);
 }
 
-UserManager::UserManager() : fname("users.dat") {
+UserManager::UserManager() : id_cmd("id.bin"), fname("users.dat") {
+#ifdef PaperL_Debug
+    cout << "In Constructor \"UserManager\" :" << endl;
+#endif
     //初始只有一个0权限空账户
     User tempUser;
     tempUser.privilege = 0;
@@ -23,8 +29,10 @@ UserManager::UserManager() : fname("users.dat") {
     fi.open(fname, ios::in | ios::binary);
     if (!fi.is_open()) {//第一次运行创建文件
         fi.close();
+#ifdef PaperL_Debug
         cout << "Discover data file \"" << fname << "\" is missing." << endl;
         cout << "Creating blank file \"" << fname << "\" ..." << endl;
+#endif
         fo.open(fname, ios::out | ios::trunc | ios::binary);
         fo.seekp(0, ios::beg);//设置root账户
         string temps;
@@ -53,6 +61,9 @@ inline bool UserManager::userStringCheck(userStringTypeEnum userStringType, stri
 }
 
 inline User UserManager::freadUser(int offset) {
+#ifdef PaperL_Debug
+    cout << "In Function \"freadUser\":" << endl;
+#endif
     User tempUser;
     fip.open(fname, ios::in | ios::binary);
     fip.seekg(offset, ios::beg);
@@ -68,12 +79,26 @@ bool UserManager::privilegeCheck(int privilegeNeed) {
         return true;
 }
 
-inline int UserManager::userSelect() { return userStack[userNumber - 1].curBook; }
+int UserManager::userSelect() {
+#ifdef PaperL_Debug
+    cout << "In Function \"userSelect\":" << endl;
+#endif
+    return userStack[userNumber - 1].curBook;
+}
 
-inline void UserManager::changeSelect(int offset) { userStack[userNumber - 1].curBook = offset; }
+void UserManager::changeSelect(int offset) {
+#ifdef PaperL_Debug
+    cout << "In Function \"changeSelect\":" << endl;
+#endif
+    userStack[userNumber - 1].curBook = offset;
+}
 
 void UserManager::su(string id, string passwd) {
-    if (!(userStringCheck(stringId, id) && userStringCheck(stringPasswd, passwd))) {//判断字符串合法
+#ifdef PaperL_Debug
+    cout << "In Function \"su\":" << endl;
+#endif
+    if (id.empty() || passwd.empty()
+        || !userStringCheck(stringId, id) || !userStringCheck(stringPasswd, passwd)) {//判断字符串合法
         printf("Invalid\n");
         return;
     }
@@ -83,10 +108,10 @@ void UserManager::su(string id, string passwd) {
         printf("Invalid\n");
         return;
     }
-    //todo 可删除调试代码
+#ifdef PaperL_Debug
     if (tempVec.size() > 1)
         printf("UserManager::su Error! 发现相同id用户");
-
+#endif
     User tempUser;
     tempUser = freadUser(tempVec[0]);
     if (passwd == tempUser.passwd) {//检查密码，加入UserStack
@@ -97,7 +122,11 @@ void UserManager::su(string id, string passwd) {
 }
 
 void UserManager::logout() {
-    //无登录账户（只有栈底的0权限空账户)
+#ifdef PaperL_Debug
+    cout << "In Function \"logout\":" << endl;
+#endif
+    //无登录账户（只有栈底的0权限空账户)时操作非法
+    //只要有登录账户，权限必大于等于1
     if (userNumber == 1)
         printf("Invalid\n");
     else
@@ -105,16 +134,25 @@ void UserManager::logout() {
 }
 
 void UserManager::reg(string id, string passwd, string name) {//注册权限为1账户
+#ifdef PaperL_Debug
+    cout << "In Function \"reg\":" << endl;
+#endif
     useradd(id, passwd, 1, name, 1);
 }
 
 void UserManager::useradd(string id, string passwd, int privilege, string name, int registerFlag) {
-    if (registerFlag == 0 && !privilegeCheck(3)) {//没有足够权限(3)
+#ifdef PaperL_Debug
+    cout << "In Function \"useradd\":" << endl;
+#endif
+    if (registerFlag == 0//非注册指令,即useradd指令时,需要权限(3)且不能创建比自身权限大的账户
+        && (userStack[userNumber - 1].privilege < 3 || userStack[userNumber - 1].privilege < privilege)) {
         printf("Invalid\n");
         return;
     }
-    if (!(userStringCheck(stringId, id) && userStringCheck(stringPasswd, passwd) && userStringCheck(stringName, name)
-          && (privilege == 0 || privilege == 1 || privilege == 3 || privilege == 7))) {//判断账户合法
+    if (id.empty() || passwd.empty() || name.empty()//任何一项为空则非法
+        || !userStringCheck(stringId, id) || !userStringCheck(stringPasswd, passwd)
+        || !userStringCheck(stringName, name)
+        || !(privilege == 1 || privilege == 3 || privilege == 7)) {//判断账户合法
         printf("Invalid\n");
         return;//输入不合法
     }
@@ -123,10 +161,10 @@ void UserManager::useradd(string id, string passwd, int privilege, string name, 
     User tempUser;
     id_cmd.findNode(id, tempVec);//查找是否有该用户
     if (!tempVec.empty()) {//存在同id账户
-        //todo 可删除调试代码
+#ifdef PaperL_Debug
         if (tempVec.size() > 1)
             printf("UserManager::su Error! 发现相同id用户");
-
+#endif
         printf("Invalid\n");
         return;
     }
@@ -145,14 +183,26 @@ void UserManager::useradd(string id, string passwd, int privilege, string name, 
     id_cmd.addNode(tempNode);
 }
 
-void UserManager::repwd(string id, string newpwd, string oldpwd) {
+void UserManager::repwd(string id, string oldpwd, string newpwd) {
+#ifdef PaperL_Debug
+    cout << "In Function \"repwd\":" << endl;
+#endif
     //本函数很多内容来自 void UserManager::su
     if (!privilegeCheck(1)) {//没有足够权限(1)
         printf("Invalid\n");
         return;
     }
-    if (!(userStringCheck(stringId, id) && userStringCheck(stringPasswd, oldpwd) &&
-          userStringCheck(stringPasswd, newpwd))) {//判断字符串合法
+    //权限7的账户可以省略oldpwd，但若不省略且输入错误oldpwd，仍为非法操作
+    char oldpwdIgnored = 0;
+    if (newpwd.empty() && userStack[userNumber - 1].privilege == 7) {
+        newpwd = oldpwd;
+        oldpwdIgnored = 1;
+    } else if (oldpwd.empty()) {
+        printf("Invalid\n");
+        return;
+    }
+    if (newpwd.empty() || !userStringCheck(stringId, id)
+        || !userStringCheck(stringPasswd, oldpwd) || !userStringCheck(stringPasswd, newpwd)) {//判断字符串合法
         printf("Invalid\n");
         return;
     }
@@ -163,37 +213,40 @@ void UserManager::repwd(string id, string newpwd, string oldpwd) {
         printf("Invalid\n");
         return;
     }
-    //todo 可删除调试代码
+#ifdef PaperL_Debug
     if (tempVec.size() > 1)
         printf("UserManager::repwd Error! 找到多个同id用户");
-
+#endif
     int offset;
     User tempUser;
     offset = tempVec[0];
     tempUser = freadUser(offset);
-    //当前登陆用户如果是非root用户需验证密码,root用户不用
-    //高权限用户低权限用户，提供密码，但是密码错误，为Invalid。
-    if (userStack[userNumber - 1].privilege != 7 && oldpwd == tempUser.passwd) {
+    if (oldpwdIgnored == 0 && oldpwd != tempUser.passwd) {
+        //未省略或不可省略oldpwd情况下密码错误
+        printf("Invalid\n");
+    } else {//省略或密码正确
         //修改账户密码并写入文件
         strcpy(tempUser.passwd, newpwd.c_str());
         fo.open(fname, ios::in | ios::out | ios::binary);
         fo.seekp(offset, ios::beg);
         fo.write(reinterpret_cast<char *>(&tempUser), sizeof(User));
         fo.close();
-    }//如果非root用户密码错误
-    else printf("Invalid\n");
+    }
 }
 
 void UserManager::del(string id) {
-    //注意不能删除已经登陆的账户！
+#ifdef PaperL_Debug
+    cout << "In Function \"del\":" << endl;
+#endif
     if (!privilegeCheck(7)) {//没有足够权限(7)
         printf("Invalid\n");
         return;
     }
-    if (!userStringCheck(stringId, id)) {
+    if (id.empty() || !userStringCheck(stringId, id)) {
         printf("Invalid\n");
         return;
     }
+    //不能删除已经登陆的账户
     string temps;
     for (int i = 0; i < userNumber; ++i) {
         temps = userStack[i].id;
@@ -202,7 +255,16 @@ void UserManager::del(string id) {
             return;
         }
     }
-    if (id_cmd.deleteNode(id) != 0)//删除操作失败
-        printf("Invalid\n");
+
+    vector<int> tempVec;
+    id_cmd.findNode(id, tempVec);
+    if (!tempVec.empty()) {
+#ifdef PaperL_Debug
+        if (tempVec.size() > 1)
+            printf("UserManager::del Error! 发现重id用户");
+#endif
+        if (id_cmd.deleteNode(Node(tempVec[0], id)) != 0)//删除操作失败
+            printf("Invalid\n");
+    } else printf("Invalid\n");
 }
 
