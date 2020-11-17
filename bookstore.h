@@ -129,8 +129,8 @@ private:
 
     void select(const string &ISBN);
 
-    void modify(const int &offset, const string &ISBN, const string &name,
-                const string &author, string keyword, const double &price);
+    void modify(const int &offset, const string &ISBN, string &name,
+                string &author, string keyword, const double &price);
 
 public:
     Bookstore();

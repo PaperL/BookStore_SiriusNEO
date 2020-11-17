@@ -15,7 +15,7 @@
 
 #include "blocklist.h"
 
-#define PaperL_Debug
+//#define PaperL_Debug
 
 using namespace std;
 

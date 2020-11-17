@@ -14,7 +14,7 @@
 #include <string>
 #include <string.h>
 
-#define PaperL_Debug
+//#define PaperL_Debug
 
 #define SIZE 320
 

@@ -10,9 +10,9 @@ User::User() {
 #endif
     privilege = -1;
     curBook = -1;
-    memset(id, 0, sizeof(char) * 32);
-    memset(passwd, 0, sizeof(char) * 32);
-    memset(name, 0, sizeof(char) * 32);
+    memset(id, 0, sizeof(id));
+    memset(passwd, 0, sizeof(passwd));
+    memset(name, 0, sizeof(name));
 }
 
 User &User::operator=(const User &right) {
@@ -92,7 +92,7 @@ bool UserManager::privilegeCheck(int privilegeNeed) {
         return false;
     } else {
 #ifdef PaperL_Debug
-        cout << "privilegeCheck succeed" << endl;
+        cout << "    privilegeCheck succeed" << endl;
 #endif
         return true;
     }
@@ -116,11 +116,14 @@ void UserManager::su(string id, string passwd) {
 #ifdef PaperL_Debug
     cout << "In Function \"su\":" << endl;
 #endif
-    if (id.empty() || passwd.empty()
-        || !userStringCheck(stringId, id) || !userStringCheck(stringPasswd, passwd)) {//判断字符串合法
-        printf("Invalid\n");
+    if (id.empty() || !userStringCheck(stringId, id) || !userStringCheck(stringPasswd, passwd)) {
+        printf("Invalid\n");//判断字符串合法
         return;
     }
+    char highPrivilegeCheck = 0;
+    if (passwd.empty())//高权限账户登录到低权限不需要密码
+        highPrivilegeCheck = 1;
+
     vector<int> tempVec;
     id_cmd.findNode(id, tempVec);//查找是否有该用户
     if (tempVec.empty()) {
@@ -130,14 +133,31 @@ void UserManager::su(string id, string passwd) {
 #ifdef PaperL_Debug
     if (tempVec.size() > 1)
         printf("UserManager::su Error! 发现相同id用户");
+    cout << "tempVec[0] = " << tempVec[0] << endl;
 #endif
+    string temps;
     User tempUser;
     tempUser = freadUser(tempVec[0]);
-    if (passwd == tempUser.passwd) {//检查密码，加入UserStack
-        tempUser.curBook = -1;
-        userStack[userNumber++] = tempUser;
-    }//如果目前没有该账户或密码错误
-    else printf("Invalid\n");
+
+    if (highPrivilegeCheck == 0) {
+        temps = tempUser.passwd;
+#ifdef PaperL_Debug
+        if (passwd != temps)
+            cout << "    wrong password" << endl;
+#endif
+        if (passwd == temps) {//检查密码，加入UserStack
+            tempUser.curBook = -1;
+            ++userNumber;
+            userStack.push_back(tempUser);
+        }//如果目前没有该账户或密码错误
+        else printf("Invalid\n");
+    } else {//检查是否为高权限登录到低权限
+        if (privilegeCheck(tempUser.privilege + 1)) {// + 1 : 需要权限大于
+            tempUser.curBook = -1;
+            ++userNumber;
+            userStack.push_back(tempUser);
+        } else printf("Invalid\n");
+    }
 }
 
 void UserManager::logout() {

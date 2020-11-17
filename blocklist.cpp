@@ -9,7 +9,7 @@ Node::Node() {
     //cout << "In Constructor \"Node\":" << endl;
 #endif
     offset = -1;
-    memset(str, 0, sizeof(char) * 64);
+    memset(str, 0, sizeof(str));
 }
 
 Node::Node(const int &arg1, const string &arg2) {
@@ -17,7 +17,7 @@ Node::Node(const int &arg1, const string &arg2) {
     //cout << "In Constructor \"Node\" Plus:" << endl;
 #endif
     offset = arg1;
-    memset(str, 0, sizeof(char) * 64);
+    memset(str, 0, sizeof(str));
     strcpy(str, arg2.c_str());
 }
 
@@ -244,6 +244,9 @@ void blocklist::findNode(const string &key, vector<int> &array) {
     }
     fi.close();
     fi2.close();
+#ifdef PaperL_Debug
+    cout << "\"findNode\" finish." << endl;
+#endif
 }
 
 void blocklist::addNode(const Node &node) {

@@ -8,10 +8,10 @@ Book::Book() {
 #ifdef PaperL_Debug
     cout << "In Constructor \"Book\" :" << endl;
 #endif
-    memset(ISBN, 0, sizeof(char) * 24);
-    memset(name, 0, sizeof(char) * 64);
-    memset(author, 0, sizeof(char) * 64);
-    memset(keyword, 0, sizeof(char) * 64);
+    memset(ISBN, 0, sizeof(ISBN));
+    memset(name, 0, sizeof(name));
+    memset(author, 0, sizeof(author));
+    memset(keyword, 0, sizeof(keyword));
     price = -1;
     quantity = 0;
 }
@@ -153,7 +153,7 @@ inline void Bookstore::BookstoreFileManager::bookBasicWrite(int &bookNum) {
 
 inline void Bookstore::BookstoreFileManager::freadBook(int offset, Book &arg) {
 #ifdef PaperL_Debug
-    cout << "In Function \"freadBook\":" << endl;
+    cout << "In Function \"freadBook\": offset = " << offset << endl;
 #endif
     fi.open(fnameBook, ios::in | ios::binary);
     fi.seekg(offset, ios::beg);
@@ -192,7 +192,7 @@ inline int Bookstore::BookstoreFileManager::fwriteBook(Book &arg) {
 
 inline void Bookstore::BookstoreFileManager::fwriteBook(int offset, Book &arg) {
 #ifdef PaperL_Debug
-    cout << "In Function \"fwriteBook\" Modify Book:" << endl;
+    cout << "In Function \"fwriteBook\" modify book:" << endl;
 #endif
     fo.open(fnameBook, ios::in | ios::out | ios::binary);
     fo.seekp(offset, ios::beg);
@@ -230,44 +230,71 @@ inline void Bookstore::splitString(string &arg, string &ret, int keywordFlag) {/
     } else {//拆分keyword字符串的情况,以'|'为分隔符
         //理论上此时arg已经没有首尾空白符了
         while ((arg[p1] != '|') && p1 < arg.length())++p1;
-        if (p1 < arg.length() - 1) {
+        if (p1 < arg.length()) {//本为(p1 < arg.length())但依然不能检查出 "a|" 这种非法字符串
             ret = arg.substr(0, p1);
-            arg = arg.substr(p1 + 1, arg.length() - p1 - 1);
+            try {//substr(pos,n) 当 pos > this.size 时抛出异常 out of range
+                //p1 + 1跳过'|'
+                arg = arg.substr(p1 + 1, arg.length() - p1 - 1);
+            }
+            catch (exception tempException) {
+                arg.clear();
+            }
+        } else {
+            ret = arg;
+            arg.clear();
         }
     }
 #ifdef PaperL_Debug
-    cout << "Split : \"" << ret << "\" \"" << arg << "\"" << endl;
+    //cout << "    Split : get \"" << ret << "\", left \"" << arg << "\"" << endl;
 #endif
 }
 
 inline bool
 Bookstore::bookStringCheck(bookStringTypeEnum bookStringType, const string &arg) {//todo const引用是个好东西,最好能用的都用上
-    //该函数视空arg为合法
+#ifdef PaperL_Debug
+    cout << "    bookStringCheck ";
     if (bookStringType == stringISBN) {
-        if (arg.length() > 20)return false;
-        //此处题面未注明ISBN的合法字符集
-        /*for (int i = 0; i < arg.length(); ++i) {
-            if (!((arg[i] >= '0' && arg[i] <= '9') || (arg[i] == '-')))
-                return false;
-        }*/
+        cout << "\"ISBN\"" << endl;
     } else if (bookStringType == stringBookName || bookStringType == stringAuthor) {
-        if (arg.length() > 62)return false;
-        if (arg[0] != '\"' || arg[arg.length() - 1] != '\"')return false;
-        for (int i = 1; i < arg.length() - 1; ++i) {
-            if (!((arg[i] >= 'a' && arg[i] <= 'z') || (arg[i] >= 'A' && arg[i] <= 'Z')))
-                return false;
-        }
+        cout << "\"Name\" or \"Author\"" << endl;
     } else {//bookStringType == stringKeyword
-        //此处只判断单个keyword,即'|'为非法字符
-        if (arg.length() > 62)return false;
-        if (arg[0] != '\"' || arg[arg.length() - 1] != '\"')return false;
-        for (int i = 1; i < arg.length() - 1; ++i) {
-            if (!((arg[i] >= 'a' && arg[i] <= 'z') || (arg[i] >= 'A' && arg[i] <= 'Z')))
-                return false;
+        cout << "\"Keyword\"" << endl;
+    }
+#endif
+    if (!arg.empty()) {//视空arg为合法
+        if (bookStringType == stringISBN) {
+            if (arg.length() > 20)return false;
+            //此处题面未注明ISBN的合法字符集
+            /*for (int i = 0; i < arg.length(); ++i) {
+                if (!((arg[i] >= '0' && arg[i] <= '9') || (arg[i] == '-')))
+                    return false;
+            }*/
+        } else if (bookStringType == stringBookName || bookStringType == stringAuthor) {
+            if (arg.length() > 62)return false;
+            if (arg[0] != '\"' || arg[arg.length() - 1] != '\"')return false;
+            for (int i = 1; i < arg.length() - 1; ++i) {
+                if (arg[i] == '\"')//不能包含双引号
+                    return false;
+            }
+        } else {//bookStringType == stringKeyword
+            //此处只判断单个keyword,即'|'为非法字符
+            if (arg.length() > 62)return false;
+            if (arg[0] != '\"' || arg[arg.length() - 1] != '\"')return false;
+            for (int i = 1; i < arg.length() - 1; ++i) {
+                if (arg[i] == '|' || arg[i] == '\"')
+                    return false;
+            }
         }
     }
 #ifdef PaperL_Debug
-    cout << "    bookStringCheck succeed" << endl;
+    cout << "    bookStringCheck ";
+    if (bookStringType == stringISBN) {
+        cout << "\"ISBN\" succeed" << endl;
+    } else if (bookStringType == stringBookName || bookStringType == stringAuthor) {
+        cout << "\"Name\" or \"Author\" succeed" << endl;
+    } else {//bookStringType == stringKeyword
+        cout << "\"Keyword\" succeed" << endl;
+    }
 #endif
     return true;
 }
@@ -275,7 +302,10 @@ Bookstore::bookStringCheck(bookStringTypeEnum bookStringType, const string &arg)
 //inline Book Bookstore::freadBook(int offset) {}
 
 inline void Bookstore::printBook(const Book &arg) {
-    printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", arg.ISBN, arg.name, arg.author, arg.keyword, arg.price, arg.quantity);
+    if (arg.price == -1)//这个特判问就是题面不合理
+        printf("%s\t%s\t%s\t%s\t0.00\t%d\n", arg.ISBN, arg.name, arg.author, arg.keyword, arg.quantity);
+    else
+        printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", arg.ISBN, arg.name, arg.author, arg.keyword, arg.price, arg.quantity);
 }
 
 void Bookstore::showLog(logTypeEnum logType) {
@@ -343,14 +373,24 @@ void Bookstore::buy(const string &ISBN, const int &quantity) {
             printf("Invalid\n");
             return;
         }
-        addFinance(quantity * tempBook.price, false);
-        tempBook.quantity -= quantity;
-        bookstoreFile_cmd.fwriteBook(user_cmd.userSelect(), tempBook);
-        printf("%.2lf\n", tempBook.price * quantity);//输出价格
+        if(tempBook.price!=-1) {//todo 为什么标程默认价格0???
+            addFinance(quantity * tempBook.price, false);
+            tempBook.quantity -= quantity;
+            bookstoreFile_cmd.fwriteBook(user_cmd.userSelect(), tempBook);
+            printf("%.2lf\n", tempBook.price * quantity);//输出价格
+        }else{
+            addFinance(0, false);
+            tempBook.quantity -= quantity;
+            bookstoreFile_cmd.fwriteBook(user_cmd.userSelect(), tempBook);
+            printf("0.00\n");//输出价格
+        }
     } else printf("Invalid\n");
 }
 
 int Bookstore::find(const string &ISBN) {
+#ifdef PaperL_Debug
+    cout << "In Function \"find\":" << endl;
+#endif
     vector<int> tempVec;
     tempVec.clear();
     isbn_cmd.findNode(ISBN, tempVec);//如果这边有多个Node就出bug了,但愿不会
@@ -358,11 +398,20 @@ int Bookstore::find(const string &ISBN) {
     if (tempVec.size() > 1)
         printf("Bookstore::find Error! 索引中有ISBN相同的Book");
 #endif
+#ifdef PaperL_Debug
+    if (tempVec.empty())
+        cout << "\"find\" no result" << endl;
+    else
+        cout << "\"find\" succeed" << endl;
+#endif
     if (!tempVec.empty()) return tempVec[0];
     else return -1;
 }
 
 void Bookstore::findplus(findTypeEnum findType, const string &key, vector<int> &array) {
+#ifdef PaperL_Debug
+    cout << "In Function \"findplus\": string \"" << key << "\"" << endl;
+#endif
     if (findType == findName) {
         name_cmd.findNode(key, array);
     } else if (findType == findAuthor) {
@@ -392,19 +441,19 @@ void Bookstore::select(const string &ISBN) {
     } else user_cmd.changeSelect(temp);//有则选中
 }
 
-void Bookstore::modify(const int &offset, const string &ISBN, const string &name,
-                       const string &author, string keyword, const double &price) {
+void Bookstore::modify(const int &offset, const string &ISBN, string &name,
+                       string &author, string keyword, const double &price) {
 #ifdef PaperL_Debug
     cout << "In Function \"modify\":" << endl;
 #endif
     //offset = user_cmd.userSelect() 已在operation中保证不为 -1
     //price在operation中已保证非负，-1表无值
-    if (!user_cmd.privilegeCheck(3)//没有足够权限(3)
-        || !bookStringCheck(stringISBN, ISBN) || !bookStringCheck(stringBookName, name)
+    if (// !user_cmd.privilegeCheck(3)//没有足够权限(3)
+        !bookStringCheck(stringISBN, ISBN) || !bookStringCheck(stringBookName, name)
         || !bookStringCheck(stringAuthor, author)
         || (!ISBN.empty() && find(ISBN) != -1)) {//如果企图改为已存在的ISBN则非法
 #ifdef PaperL_Debug
-        if(!ISBN.empty() && find(ISBN) != -1)
+        if (!ISBN.empty() && find(ISBN) == -1)
             cout << "    find ISBN fail" << endl;
 #endif
         printf("Invalid\n");
@@ -414,21 +463,39 @@ void Bookstore::modify(const int &offset, const string &ISBN, const string &name
     Book tempBook;//覆盖改写Book内容
     bookstoreFile_cmd.freadBook(offset, tempBook);
     if (!ISBN.empty()) {
+#ifdef PaperL_Debug
+        cout << "  \"ISBN\":" << endl;
+#endif
         isbn_cmd.deleteNode(Node(offset, tempBook.ISBN));
         isbn_cmd.addNode(Node(offset, ISBN));
         strcpy(tempBook.ISBN, ISBN.c_str());
     }
     if (!name.empty()) {
+#ifdef PaperL_Debug
+        cout << "  \"name\":" << endl;
+#endif
+        name = name.substr(1, name.size() - 2);//去除首末双引号
         name_cmd.deleteNode(Node(offset, tempBook.name));
         name_cmd.addNode(Node(offset, name));
         strcpy(tempBook.name, name.c_str());
     }
     if (!author.empty()) {
+#ifdef PaperL_Debug
+        cout << "  \"author\":" << endl;
+#endif
+        author = author.substr(1, author.size() - 2);//去除首末双引号
         author_cmd.deleteNode(Node(offset, tempBook.author));
         author_cmd.addNode(Node(offset, author));
         strcpy(tempBook.author, author.c_str());
     }
     if (!keyword.empty()) {
+#ifdef PaperL_Debug
+        cout << "  \"keyword\":" << endl;
+#endif
+        //去除首末双引号
+        keyword = keyword.substr(1, keyword.size() - 2);
+        strcpy(tempBook.keyword, keyword.c_str());
+
         string temps, temps2;
         temps2 = tempBook.keyword;//先把旧keyword索引内容删除
         splitString(temps2, temps, 1);
@@ -443,6 +510,10 @@ void Bookstore::modify(const int &offset, const string &ISBN, const string &name
             splitString(keyword, temps, 1);
         }
     }
+    if (price != -1) tempBook.price = price;
+
+    //写入文件
+    bookstoreFile_cmd.fwriteBook(offset, tempBook);
 }
 
 void Bookstore::operation(string cmd) {
@@ -531,7 +602,7 @@ void Bookstore::operation(string cmd) {
     }
         //---------------------------------modify
     else if (arg0 == "modify") {
-        if (user_cmd.userSelect() != -1) {
+        if (user_cmd.userSelect() != -1 && user_cmd.privilegeCheck(3)) {
             string modifyISBN, modifyName, modifyAuthor, modifyKeyword;
             double modifyPrice = -1;
             char invalidFlag = 0;
@@ -584,7 +655,7 @@ void Bookstore::operation(string cmd) {
         splitString(cmd, arg2);
 
         splitString(cmd, arg0);
-        if (!arg0.empty()) {
+        if (arg0.empty()) {
             try {//todo 同useradd.todo
                 import(stoi(arg1), stod(arg2));
             }
@@ -639,17 +710,17 @@ void Bookstore::operation(string cmd) {
                     if (arg1.substr(0, 6) == "-name=") {
                         arg1 = arg1.substr(6, arg1.length() - 6);
                         if (!arg1.empty() && bookStringCheck(stringBookName, arg1))
-                            findplus(findName, arg1, tempArray);
+                            findplus(findName, arg1.substr(1, arg1.size() - 2), tempArray);//arg1.substr()去双引号
                         else invalidFlag = 1;
                     } else if (arg1.substr(0, 8) == "-author=") {
                         arg1 = arg1.substr(8, arg1.length() - 8);
                         if (!arg1.empty() && bookStringCheck(stringAuthor, arg1))
-                            findplus(findAuthor, arg1, tempArray);
+                            findplus(findAuthor, arg1.substr(1, arg1.size() - 2), tempArray);
                         else invalidFlag = 1;
                     } else if (arg1.substr(0, 9) == "-keyword=") {
                         arg1 = arg1.substr(9, arg1.length() - 9);
                         if (!arg1.empty() && bookStringCheck(stringKeyword, arg1))
-                            findplus(findKeyword, arg1, tempArray);
+                            findplus(findKeyword, arg1.substr(1, arg1.size() - 2), tempArray);
                         else invalidFlag = 1;
                     }
                         //show命令参数不为任何合法参数
