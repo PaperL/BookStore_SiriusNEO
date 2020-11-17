@@ -28,6 +28,8 @@ public:
     char name[32];
 
     User();
+
+    User &operator=(const User &right);
 };
 
 class UserManager {

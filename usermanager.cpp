@@ -15,6 +15,17 @@ User::User() {
     memset(name, 0, sizeof(char) * 32);
 }
 
+User &User::operator=(const User &right) {
+    if (this == &right)
+        return *this;
+    privilege = right.privilege;
+    curBook = right.curBook;
+    strcpy(id, right.id);
+    strcpy(passwd, right.passwd);
+    strcpy(name, right.name);
+    return *this;
+}
+
 UserManager::UserManager() : id_cmd("id.bin"), fname("users.dat") {
 #ifdef PaperL_Debug
     cout << "In Constructor \"UserManager\" :" << endl;
@@ -23,7 +34,7 @@ UserManager::UserManager() : id_cmd("id.bin"), fname("users.dat") {
     User tempUser;
     tempUser.privilege = 0;
     userStack.clear();
-    userStack[0] = tempUser;
+    userStack.push_back(tempUser);
     userNumber = 1;
 
     fi.open(fname, ios::in | ios::binary);
@@ -42,6 +53,7 @@ UserManager::UserManager() : id_cmd("id.bin"), fname("users.dat") {
         temps = "sjtu", strcpy(tempUser.passwd, temps.c_str());
         fo.write(reinterpret_cast<char *>(&tempUser), sizeof(User));
         fo.close();
+        id_cmd.addNode(Node(0, "root"));
     } else fi.close();
 }
 
@@ -73,10 +85,17 @@ inline User UserManager::freadUser(int offset) {
 }
 
 bool UserManager::privilegeCheck(int privilegeNeed) {
-    if (userStack[userNumber - 1].privilege < privilegeNeed)//没有足够权限
+    if (userStack[userNumber - 1].privilege < privilegeNeed) {//没有足够权限
+#ifdef PaperL_Debug
+        cout << "    privilegeCheck fail" << endl;
+#endif
         return false;
-    else
+    } else {
+#ifdef PaperL_Debug
+        cout << "privilegeCheck succeed" << endl;
+#endif
         return true;
+    }
 }
 
 int UserManager::userSelect() {

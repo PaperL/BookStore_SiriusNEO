@@ -33,6 +33,8 @@ public:
 
     Book();
 
+    Book &operator=(const Book &right);
+
     bool operator<(const Book &x) const;
 };
 

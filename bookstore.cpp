@@ -16,6 +16,18 @@ Book::Book() {
     quantity = 0;
 }
 
+Book &Book::operator=(const Book &right) {
+    if (this == &right)
+        return *this;
+    strcpy(ISBN, right.ISBN);
+    strcpy(name, right.name);
+    strcpy(author, right.author);
+    strcpy(keyword, right.keyword);
+    price = right.price;
+    quantity = right.quantity;
+    return *this;
+}
+
 bool Book::operator<(const Book &x) const {
     string s1 = ISBN, s2 = x.ISBN;
     return s1 < s2;
@@ -156,9 +168,12 @@ inline void Bookstore::BookstoreFileManager::freadBook(vector<Book> &array) {
     fi.open(fnameBook, ios::in | ios::binary);
     fi.seekg(0, ios::beg);
     int temp;
+    Book tempBook;
     fi.read(reinterpret_cast<char *>(&temp), sizeof(int));
-    for (int i = 0; i < temp; ++i)
-        fi.read(reinterpret_cast<char *>(&array[i]), sizeof(Book));
+    for (int i = 0; i < temp; ++i) {
+        fi.read(reinterpret_cast<char *>(&tempBook), sizeof(Book));
+        array.push_back(tempBook);
+    }
     fi.close();
 }
 
@@ -220,6 +235,9 @@ inline void Bookstore::splitString(string &arg, string &ret, int keywordFlag) {/
             arg = arg.substr(p1 + 1, arg.length() - p1 - 1);
         }
     }
+#ifdef PaperL_Debug
+    cout << "Split : \"" << ret << "\" \"" << arg << "\"" << endl;
+#endif
 }
 
 inline bool
@@ -248,6 +266,9 @@ Bookstore::bookStringCheck(bookStringTypeEnum bookStringType, const string &arg)
                 return false;
         }
     }
+#ifdef PaperL_Debug
+    cout << "    bookStringCheck succeed" << endl;
+#endif
     return true;
 }
 
@@ -331,6 +352,7 @@ void Bookstore::buy(const string &ISBN, const int &quantity) {
 
 int Bookstore::find(const string &ISBN) {
     vector<int> tempVec;
+    tempVec.clear();
     isbn_cmd.findNode(ISBN, tempVec);//如果这边有多个Node就出bug了,但愿不会
 #ifdef PaperL_Debug
     if (tempVec.size() > 1)
@@ -381,6 +403,10 @@ void Bookstore::modify(const int &offset, const string &ISBN, const string &name
         || !bookStringCheck(stringISBN, ISBN) || !bookStringCheck(stringBookName, name)
         || !bookStringCheck(stringAuthor, author)
         || (!ISBN.empty() && find(ISBN) != -1)) {//如果企图改为已存在的ISBN则非法
+#ifdef PaperL_Debug
+        if(!ISBN.empty() && find(ISBN) != -1)
+            cout << "    find ISBN fail" << endl;
+#endif
         printf("Invalid\n");
         return;
     }
@@ -431,14 +457,15 @@ void Bookstore::operation(string cmd) {
         splitString(cmd, arg2);
 
         splitString(cmd, arg0);//如果还有其余多余输入，则为无效命令
-        if (!arg0.empty())
+
+        if (arg0.empty())
             user_cmd.su(arg1, arg2);
         else printf("Invalid\n");
     }
         //---------------------------------logout
     else if (arg0 == "logout") {
         splitString(cmd, arg0);
-        if (!arg0.empty())
+        if (arg0.empty())
             user_cmd.logout();
         else printf("Invalid\n");
     }
@@ -451,7 +478,7 @@ void Bookstore::operation(string cmd) {
         splitString(cmd, arg4);
 
         splitString(cmd, arg0);
-        if (!arg0.empty()) {
+        if (arg0.empty()) {
             try {//todo stoi的输入为空白字符串时不会报错，合法数字后跟非法字符也不会报错，最好还是自己写吧
                 user_cmd.useradd(arg1, arg2, stoi(arg3), arg4);
             }
@@ -467,7 +494,7 @@ void Bookstore::operation(string cmd) {
         splitString(cmd, arg3);
 
         splitString(cmd, arg0);
-        if (!arg0.empty())
+        if (arg0.empty())
             user_cmd.reg(arg1, arg2, arg3);
         else printf("Invalid\n");
     }
@@ -476,7 +503,7 @@ void Bookstore::operation(string cmd) {
         splitString(cmd, arg1);
 
         splitString(cmd, arg0);
-        if (!arg0.empty())
+        if (arg0.empty())
             user_cmd.del(arg1);
         else printf("Invalid\n");
     }
@@ -487,7 +514,7 @@ void Bookstore::operation(string cmd) {
         splitString(cmd, arg3);
 
         splitString(cmd, arg0);
-        if (!arg0.empty())
+        if (arg0.empty())
             user_cmd.repwd(arg1, arg2, arg3);
         else printf("Invalid\n");
     }
@@ -498,7 +525,7 @@ void Bookstore::operation(string cmd) {
         splitString(cmd, arg1);
 
         splitString(cmd, arg0);
-        if (!arg0.empty())
+        if (arg0.empty())
             select(arg1);
         else printf("Invalid\n");
     }
@@ -533,6 +560,7 @@ void Bookstore::operation(string cmd) {
                     } else invalidFlag = 1;
                 } else if (arg1.substr(0, 7) == "-price=") {
                     if (modifyPrice == -1) {
+                        arg1 = arg1.substr(7, arg1.length() - 7);
                         try {
                             modifyPrice = stod(arg1);
                             if (modifyPrice < 0)invalidFlag = 1;
@@ -635,9 +663,12 @@ void Bookstore::operation(string cmd) {
                             //将tempArray中所有书籍，根据ISBN号排序并输出
                             int i;
                             vector<Book> tempBookArray;
+                            Book tempBook;
                             tempBookArray.clear();
-                            for (i = 0; i < tempArray.size(); ++i)
-                                bookstoreFile_cmd.freadBook(tempArray[i], tempBookArray[i]);
+                            for (i = 0; i < tempArray.size(); ++i) {
+                                bookstoreFile_cmd.freadBook(tempArray[i], tempBook);
+                                tempBookArray.push_back(tempBook);
+                            }
                             sort(tempBookArray.begin(), tempBookArray.end());
                             for (i = 0; i < tempArray.size(); ++i)
                                 printBook(tempBookArray[i]);
@@ -664,7 +695,7 @@ void Bookstore::operation(string cmd) {
         splitString(cmd, arg2);
 
         splitString(cmd, arg0);
-        if (!arg0.empty()) {
+        if (arg0.empty()) {
             try {
                 buy(arg1, stoi(arg2));
             }
@@ -680,7 +711,7 @@ void Bookstore::operation(string cmd) {
         splitString(cmd, arg1);
 
         splitString(cmd, arg0);
-        if (!arg0.empty()) {
+        if (arg0.empty()) {
             if (arg1 == "finance")
                 showLog(reportFinance);
             else if (arg1 == "employee")
@@ -694,7 +725,7 @@ void Bookstore::operation(string cmd) {
         //---------------------------------log
     else if (arg0 == "log") {
         splitString(cmd, arg0);
-        if (!arg0.empty()) {
+        if (arg0.empty()) {
             showLog(reportLog);
         } else printf("Invalid\n");
     }

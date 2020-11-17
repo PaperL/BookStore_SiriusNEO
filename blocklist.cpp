@@ -6,7 +6,7 @@
 
 Node::Node() {
 #ifdef PaperL_Debug
-    cout << "In Constructor \"Node\":" << endl;
+    //cout << "In Constructor \"Node\":" << endl;
 #endif
     offset = -1;
     memset(str, 0, sizeof(char) * 64);
@@ -14,11 +14,19 @@ Node::Node() {
 
 Node::Node(const int &arg1, const string &arg2) {
 #ifdef PaperL_Debug
-    cout << "In Constructor \"Node\" Plus:" << endl;
+    //cout << "In Constructor \"Node\" Plus:" << endl;
 #endif
     offset = arg1;
     memset(str, 0, sizeof(char) * 64);
     strcpy(str, arg2.c_str());
+}
+
+Node &Node::operator=(const Node &right) {
+    if (this == &right)
+        return *this;
+    offset = right.offset;
+    strcpy(str, right.str);
+    return *this;
 }
 
 bool Node::operator<(const Node &x) const {
@@ -33,6 +41,19 @@ Block::Block() {
     nxt = -1;
     pre = -1;
     num = 0;
+}
+
+Block &Block::operator=(const Block &right) {
+    if (this == &right)
+        return *this;
+    nxt = right.nxt;
+    pre = right.pre;
+    num = right.num;
+    for (int i = 0; i < num; ++i)
+        array[i] = right.array[i];
+    for (int i = num; i < 320; ++i)
+        array[i] = Node();
+    return *this;
 }
 
 inline int blocklist::nextBlock(int offset) {//获取下一个块的文件内绝对地址

@@ -29,7 +29,9 @@ public:
 
     Node();
 
-    Node(const int &arg1, const string &arg2) ;
+    Node(const int &arg1, const string &arg2);
+
+    Node &operator=(const Node &right);
 };
 
 class Block {
@@ -40,6 +42,8 @@ public:
     Node array[SIZE];
 
     Block();
+
+    Block &operator=(const Block &right);
 };
 
 class blocklist {
