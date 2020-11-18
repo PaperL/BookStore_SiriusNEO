@@ -42,7 +42,7 @@ UserManager::UserManager() : id_cmd("id.bin"), fname("users.dat") {
         fi.close();
 #ifdef PaperL_Debug
         cout << "Discover data file \"" << fname << "\" is missing." << endl;
-        cout << "Creating blank file \"" << fname << "\" ..." << endl;
+        //cout << "Creating blank file \"" << fname << "\" ..." << endl;
 #endif
         fo.open(fname, ios::out | ios::trunc | ios::binary);
         fo.seekp(0, ios::beg);//设置root账户
@@ -55,6 +55,24 @@ UserManager::UserManager() : id_cmd("id.bin"), fname("users.dat") {
         fo.close();
         id_cmd.addNode(Node(0, "root"));
     } else fi.close();
+
+    fi.open(fname, ios::in | ios::binary);
+    fip.open(fname, ios::in | ios::binary);
+
+    fo.open(fname, ios::in | ios::out | ios::binary);
+    fop.open(fname, ios::in | ios::out | ios::binary);
+}
+
+UserManager::~UserManager() {
+#ifdef PaperL_Debug
+    cout << "In Destructor \"UserManager\" :" << endl;
+#endif
+    fi.close();
+    fip.close();
+
+    fo.close();
+    fop.close();
+
 }
 
 inline bool UserManager::userStringCheck(userStringTypeEnum userStringType, string arg) {
@@ -77,10 +95,10 @@ inline User UserManager::freadUser(int offset) {
     cout << "In Function \"freadUser\":" << endl;
 #endif
     User tempUser;
-    fip.open(fname, ios::in | ios::binary);
+    //fip.open(fname, ios::in | ios::binary);
     fip.seekg(offset, ios::beg);
     fip.read(reinterpret_cast<char *>(&tempUser), sizeof(User));
-    fip.close();
+    //fip.close();
     return tempUser;
 }
 
@@ -219,11 +237,11 @@ void UserManager::useradd(string id, string passwd, int privilege, string name, 
     strcpy(tempUser.id, id.c_str());
     strcpy(tempUser.passwd, passwd.c_str());
     strcpy(tempUser.name, name.c_str());
-    fo.open(fname, ios::in | ios::out | ios::binary);
+    //fo.open(fname, ios::in | ios::out | ios::binary);
     fo.seekp(0, ios::end);
     Node tempNode((int) fo.tellp(), id);
     fo.write(reinterpret_cast<char *>(&tempUser), sizeof(User));
-    fo.close();
+    //fo.close();
     //添加账户索引
     id_cmd.addNode(tempNode);
 }
@@ -272,10 +290,10 @@ void UserManager::repwd(string id, string oldpwd, string newpwd) {
     } else {//省略或密码正确
         //修改账户密码并写入文件
         strcpy(tempUser.passwd, newpwd.c_str());
-        fo.open(fname, ios::in | ios::out | ios::binary);
+        //fo.open(fname, ios::in | ios::out | ios::binary);
         fo.seekp(offset, ios::beg);
         fo.write(reinterpret_cast<char *>(&tempUser), sizeof(User));
-        fo.close();
+        //fo.close();
     }
 }
 

@@ -14,9 +14,12 @@
 #include <string>
 #include <string.h>
 
-//#define PaperL_Debug
+#define BLOCK_SIZE 20
+#define BLOCK_SPLIT_THRESHOLD 15
+#define BLOCK_SPLIT_LEFT 10
+#define BLOCK_MERGE_THRESHOLD 5
 
-#define SIZE 320
+//#define PaperL_Debug
 
 using namespace std;
 
@@ -39,7 +42,7 @@ public:
     int nxt;
     int pre;
     int num;
-    Node array[SIZE];
+    Node array[BLOCK_SIZE];
 
     Block();
 
@@ -49,24 +52,31 @@ public:
 class blocklist {
 private:
     const string fname;
-    fstream fi, fo, fi2, fo2, fip;
+    fstream fi, fo, fi2, fo2, fip, fip2, fop, fop2;
 
-    inline int nextBlock(int offset);
+    inline int nextBlock(const int &offset);
 
-    void delBlock(int offset);
+    inline void delBlock(const int &offset);
 
-    void mergeBlock(int offset1, int offset2);
+    void mergeBlock(const int &offset1, const int &offset2);
 
-    void splitBlock(int offset, int leftNum);
+    void splitBlock(const int &offset);
 
 public:
     blocklist(const string &arg);
+
+    ~blocklist();
 
     void findNode(const string &key, vector<int> &array);
 
     void addNode(const Node &node);
 
     int deleteNode(const Node &node);
+
+#ifdef PaperL_Debug
+    void debugPrint();
+#endif
+
 };
 
 

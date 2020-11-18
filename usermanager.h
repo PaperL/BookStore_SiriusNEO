@@ -60,6 +60,8 @@ private:
 public:
     UserManager();
 
+    ~UserManager();
+
     bool privilegeCheck(int privilegeNeed);
 
     int userSelect();

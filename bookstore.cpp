@@ -49,7 +49,7 @@ Bookstore::BookstoreFileManager::BookstoreFileManager() :
         fi.close();
 #ifdef PaperL_Debug
         cout << "Discover index file \"" << fnameBook << "\" is missing." << endl;
-        cout << "Creating blank file \"" << fnameBook << "\" ..." << endl;
+        //cout << "Creating blank file \"" << fnameBook << "\" ..." << endl;
 #endif
         fi.open(fnameBook, ios::out | ios::trunc | ios::binary);
         //book.dat开头应写入图书总数(int)
@@ -65,7 +65,7 @@ Bookstore::BookstoreFileManager::BookstoreFileManager() :
         fi.close();
 #ifdef PaperL_Debug
         cout << "Discover index file \"" << fnameFinance << "\" is missing." << endl;
-        cout << "Creating blank file \"" << fnameFinance << "\" ..." << endl;
+        //cout << "Creating blank file \"" << fnameFinance << "\" ..." << endl;
 #endif
         fi.open(fnameFinance, ios::out | ios::trunc | ios::binary);
         //finance.dat开头应写入交易次数(int),总收入(double),总支出(double)
@@ -84,7 +84,7 @@ Bookstore::BookstoreFileManager::BookstoreFileManager() :
         fi.close();
 #ifdef PaperL_Debug
         cout << "Discover index file \"" << fnameLog << "\" is missing." << endl;
-        cout << "Creating blank file \"" << fnameLog << "\" ..." << endl;
+        //cout << "Creating blank file \"" << fnameLog << "\" ..." << endl;
 #endif
         fi.open(fnameLog, ios::out | ios::trunc | ios::binary);
     }
@@ -702,6 +702,7 @@ void Bookstore::operation(string cmd) {
     }
         //---------------------------------show
     else if (arg0 == "show") {
+        //author_cmd.debugPrint();//todo 特殊debug函数
         if (!cmd.empty()) {//带参数show指令
             splitString(cmd, arg1);
             //show finance

@@ -6,7 +6,7 @@
 #include "bookstore.h"
 
 //#define PaperL_Debug
-#define FileIO
+//#define FileIO
 
 using namespace std;
 
@@ -32,13 +32,13 @@ int main() {
     while (getline(cin, inputString) && inputString != "exit" && inputString != "quit") {
 
 #ifdef PaperL_Debug
-        cout << "    @ Operation : \"" << inputString << "\"" << endl;
+        cout << "====@ Operation : \"" << inputString << "\"" << endl;
 #endif
 
         bookstore_cmd.operation(inputString);
 
 #ifdef PaperL_Debug
-        cout << "    @ Operation Finish" << endl;
+        cout << "====@ Operation Finish" << endl;
 #endif
 
         //getline(cin, inputString);
