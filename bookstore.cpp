@@ -242,9 +242,9 @@ Bookstore::Bookstore() : isbn_cmd("isbn.bin"), name_cmd("name.bin"), author_cmd(
 #ifdef PaperL_Debug
     cout << "In Constructor \"Bookstore\" :" << endl;
 #endif
-    bookNumber = 0;
+    //bookNumber = 0;
     bookstoreFile_cmd.financeInit(tradeNumber, totIncome, totExpense);//todo 这里能不能初始化？
-    bookstoreFile_cmd.bookInit(bookNumber);
+    //bookstoreFile_cmd.bookInit(bookNumber);
 }
 
 inline void Bookstore::splitString(string &arg, string &ret, int keywordFlag) {//将arg拆分出第一部分ret
@@ -374,7 +374,7 @@ void Bookstore::showFinance(int time) {//以确保 time 为正，time == -1 时�
     }
 }
 
-void Bookstore::import(int quantity, double price) {
+void Bookstore::import(const int &quantity, const double &price) {
 #ifdef PaperL_Debug
     cout << "In Function \"import\":" << endl;
 #endif
@@ -404,7 +404,7 @@ void Bookstore::buy(const string &ISBN, const int &quantity) {
     if (temp != -1) {
         //修改Book.quantity
         Book tempBook;
-        bookstoreFile_cmd.freadBook(user_cmd.userSelect(), tempBook);
+        bookstoreFile_cmd.freadBook(temp, tempBook);
         if (tempBook.quantity < quantity) {//库存不够
             printf("Invalid\n");
             return;
@@ -412,12 +412,12 @@ void Bookstore::buy(const string &ISBN, const int &quantity) {
         if (tempBook.price != -1) {//todo 为什么标程默认价格0???
             addFinance(quantity * tempBook.price, false);
             tempBook.quantity -= quantity;
-            bookstoreFile_cmd.fwriteBook(user_cmd.userSelect(), tempBook);
+            bookstoreFile_cmd.fwriteBook(temp, tempBook);
             printf("%.2lf\n", tempBook.price * quantity);//输出价格
         } else {
             addFinance(0, false);
             tempBook.quantity -= quantity;
-            bookstoreFile_cmd.fwriteBook(user_cmd.userSelect(), tempBook);
+            bookstoreFile_cmd.fwriteBook(temp, tempBook);
             printf("0.00\n");//输出价格
         }
     } else printf("Invalid\n");
@@ -452,9 +452,10 @@ void Bookstore::findplus(findTypeEnum findType, const string &key, vector<int> &
         name_cmd.findNode(key, array);
     } else if (findType == findAuthor) {
         author_cmd.findNode(key, array);
-    } else {//findType == findKeyword
+    } else if (findType == findKeyword) {
         keyword_cmd.findNode(key, array);
     }
+    else printf("Unexpected findType\n");
 }
 
 void Bookstore::select(const string &ISBN) {
@@ -462,7 +463,7 @@ void Bookstore::select(const string &ISBN) {
     cout << "In Function \"select\":" << endl;
 #endif
     if (!user_cmd.privilegeCheck(3)
-        || ISBN.empty() || !bookStringCheck(stringISBN, ISBN)) {//没有足够权限(7)
+        || ISBN.empty() || !bookStringCheck(stringISBN, ISBN)) {//没有足够权限(3)
         printf("Invalid\n");
         return;
     }
@@ -762,7 +763,6 @@ void Bookstore::operation(string cmd) {
                     }
                         //show命令参数不为任何合法参数
                     else {
-                        printf("Invalid\n");
                         invalidFlag = 1;
                     }
 
@@ -778,7 +778,7 @@ void Bookstore::operation(string cmd) {
                                 tempBookArray.push_back(tempBook);
                             }
                             sort(tempBookArray.begin(), tempBookArray.end());
-                            for (i = 0; i < tempArray.size(); ++i)
+                            for (i = 0; i < tempBookArray.size(); ++i)
                                 printBook(tempBookArray[i]);
                         } else printf("\n");
                     } else printf("Invalid\n");

@@ -61,10 +61,10 @@ inline int blocklist::nextBlock(const int &offset) {//获取下一个块的文�
     cout << "In Function \"nextBlock\":" << endl;
 #endif
     int temp;
-    //fip.open(fname, ios::in | ios::binary);
+    fip.open(fname, ios::in | ios::binary);
     fip.seekg(offset, ios::beg);
     fip.read(reinterpret_cast<char *>(&temp), 4);
-    //fip.close();
+    fip.close();
 #ifdef PaperL_Debug
     cout << "nxtPtr = " << temp << endl;
 #endif
@@ -76,8 +76,8 @@ inline void blocklist::delBlock(const int &offset) {//删除块
     cout << "In Function \"delBlock\":" << endl;
 #endif
     int nxt, pre;
-    //fip.open(fname, ios::in | ios::binary);
-    //fop.open(fname, ios::in | ios::out | ios::binary);
+    fip.open(fname, ios::in | ios::binary);
+    fop.open(fname, ios::in | ios::out | ios::binary);
 
     fip.seekg(offset, ios::beg);//读入待删除块的nxt和pre
     fip.read(reinterpret_cast<char *>(&nxt), 4);
@@ -88,8 +88,8 @@ inline void blocklist::delBlock(const int &offset) {//删除块
     fop.seekp(nxt + 4, ios::beg);
     fop.write(reinterpret_cast<char *>(&pre), 4);
 
-    //fip.close();
-    //fop.close();
+    fip.close();
+    fop.close();
 }
 
 void blocklist::mergeBlock(const int &offset1, const int &offset2) {//合并相邻块
@@ -97,9 +97,9 @@ void blocklist::mergeBlock(const int &offset1, const int &offset2) {//合并相�
 #ifdef PaperL_Debug
     cout << "In Function \"mergeBlock\":" << endl;
 #endif
-    //fi.open(fname, ios::in | ios::binary);
-    //fi2.open(fname, ios::in | ios::binary);
-    //fo.open(fname, ios::in | ios::out | ios::binary);
+    fip.open(fname, ios::in | ios::binary);
+    fip2.open(fname, ios::in | ios::binary);
+    fop.open(fname, ios::in | ios::out | ios::binary);
 
     Block tempBlock1, tempBlock2;//读入待合并块
     fip.seekg(offset1, ios::beg);
@@ -127,19 +127,19 @@ void blocklist::mergeBlock(const int &offset1, const int &offset2) {//合并相�
         fo.write(reinterpret_cast<char *>(&offset1), 4);
     }*/
 
-    //fi.close();
-    //fi2.close();
-    //fo.close();
+    fip.close();
+    fip2.close();
+    fop.close();
 }
 
 void blocklist::splitBlock(const int &offset) {//leftNum为offset块保留Node个数
 #ifdef PaperL_Debug
     cout << "In Function \"splitBlock\":" << endl;
 #endif
-    //fi.open(fname, ios::in | ios::binary);
-    //fo.open(fname, ios::in | ios::out | ios::binary);
-    //fi2.open(fname, ios::in | ios::binary);
-    //fo2.open(fname, ios::in | ios::out | ios::binary);
+    fip.open(fname, ios::in | ios::binary);
+    fop.open(fname, ios::in | ios::out | ios::binary);
+    fip2.open(fname, ios::in | ios::binary);
+    fop2.open(fname, ios::in | ios::out | ios::binary);
 
     //读入offset块
     Block tempBlock;
@@ -179,8 +179,8 @@ void blocklist::splitBlock(const int &offset) {//leftNum为offset块保留Node�
     cout << "ios::end2 = " << fop.tellp() << endl;
 #endif*/
     fop.close();
-    //fi.close(), fo.close();
-    //fi2.close(), fo2.close();
+    fip.close(), fop.close();
+    fip2.close(), fop2.close();
 }
 
 blocklist::blocklist(const string &arg) : fname(arg) {//构造函数
@@ -199,7 +199,7 @@ blocklist::blocklist(const string &arg) : fname(arg) {//构造函数
     }
     fi.close();
 
-    fi.open(fname, ios::in | ios::binary);
+    /*fi.open(fname, ios::in | ios::binary);
     fi2.open(fname, ios::in | ios::binary);
     fip.open(fname, ios::in | ios::binary);
     fip2.open(fname, ios::in | ios::binary);
@@ -207,14 +207,14 @@ blocklist::blocklist(const string &arg) : fname(arg) {//构造函数
     fo.open(fname, ios::in | ios::out | ios::binary);
     fo2.open(fname, ios::in | ios::out | ios::binary);
     fop.open(fname, ios::in | ios::out | ios::binary);
-    fop2.open(fname, ios::in | ios::out | ios::binary);
+    fop2.open(fname, ios::in | ios::out | ios::binary);*/
 }
 
 blocklist::~blocklist() {
 #ifdef PaperL_Debug
     cout << "In Destructor \"blocklist\" :" << endl;
 #endif
-    fi.close();
+    /*fi.close();
     fi2.close();
     fip.close();
     fip2.close();
@@ -222,15 +222,15 @@ blocklist::~blocklist() {
     fo.close();
     fo2.close();
     fop.close();
-    fop2.close();
+    fop2.close();*/
 }
 
 void blocklist::findNode(const string &key, vector<int> &array) {
 #ifdef PaperL_Debug
     cout << "In Function \"findNode\":" << endl;
 #endif
-    //fi.open(fname, ios::in | ios::binary);
-    //fi2.open(fname, ios::in | ios::binary);
+    fi.open(fname, ios::in | ios::binary);
+    fi2.open(fname, ios::in | ios::binary);
 
     array.clear();
     fi2.seekg(0, ios::end);//文件末指针
@@ -246,14 +246,15 @@ void blocklist::findNode(const string &key, vector<int> &array) {
 #ifdef PaperL_Debug
             cout << "\"findNode\" finish : Less than minum" << endl;
 #endif
+            fi.close();
+            fi2.close();
             return;
         }
 
         int lastp = 0;//lastp为node应在块的位置//todo　此处逻辑修正
         int nodep = 0;//nodep为正在遍历的块的位置
-        while (key >= s) {
-            if (key > s)
-                lastp = nodep;
+        while (key > s) {
+            lastp = nodep;
             nodep = nextBlock(nodep);
             if (nodep == -1)break;
             fi.seekg(nodep + 16, ios::beg);//读入nodep块的第一个Node.str
@@ -299,7 +300,7 @@ void blocklist::findNode(const string &key, vector<int> &array) {
         //如果搜索到块末，继续搜索下一个块
         while (pos == tempBlock.num) {
 #ifdef PaperL_Debug
-            cout << "    Search to End of Block" << endl;
+            cout << "    Search to End of Blocklist" << endl;
 #endif
             lastp = nextBlock(lastp);//读入下一个块
             if (lastp == -1) break;
@@ -329,8 +330,8 @@ void blocklist::findNode(const string &key, vector<int> &array) {
         }
 
     }
-    //fi.close();
-    //fi2.close();
+    fi.close();
+    fi2.close();
 #ifdef PaperL_Debug
     cout << "\"findNode\" finish." << endl;
 #endif
@@ -341,9 +342,9 @@ void blocklist::addNode(const Node &node) {
     cout << "In Function \"addNode\":" << endl;
     cout << "offset: " << node.offset << " ;\tstr: \"" << node.str << "\"" << endl;
 #endif
-    //fi.open(fname, ios::in | ios::binary);
-    //fo.open(fname, ios::in | ios::out | ios::binary);
-    //fi2.open(fname, ios::in | ios::binary);
+    fi.open(fname, ios::in | ios::binary);
+    fo.open(fname, ios::in | ios::out | ios::binary);
+    fi2.open(fname, ios::in | ios::binary);
 
     fi2.seekg(0, ios::end);//文件末指针
     fi.seekg(16, ios::beg);//第一个块的array[0].str起始位置
@@ -363,7 +364,7 @@ void blocklist::addNode(const Node &node) {
         fi.read(temps, 64);
         s = temps;
         keyString = node.str;
-        while (s <= keyString) {
+        while (keyString >= s) {
             lastp = nodep;
             nodep = nextBlock(nodep);
             if (nodep == -1)break;
@@ -401,20 +402,24 @@ void blocklist::addNode(const Node &node) {
 #ifdef PaperL_Debug
     cout << "\"addNode\" finish." << endl;
 #endif
-    //fi.close(), fo.close();
-    //fi2.close();
+    fi.close(), fo.close();
+    fi2.close();
 }
 
 int blocklist::deleteNode(const Node &node) {
 #ifdef PaperL_Debug
     cout << "In Function \"deleteNode\":" << endl;
 #endif
-    //fi.open(fname, ios::in | ios::binary);
-    //fi2.open(fname, ios::in | ios::binary);
+    fi.open(fname, ios::in | ios::binary);
+    fi2.open(fname, ios::in | ios::binary);
 
     fi2.seekg(0, ios::end);//文件末指针
     fi.seekg(16, ios::beg);//第一个块的array[0].str起始位置
-    if (fi.tellg() >= fi2.tellg()) return -1;//操作失败
+    if (fi.tellg() >= fi2.tellg()) {
+        fi.close();
+        fi2.close();
+        return -1;//操作失败
+    }
 
     //遍历查找node所在块
     string s, keyString;
@@ -423,7 +428,11 @@ int blocklist::deleteNode(const Node &node) {
     s = temps;
     keyString = node.str;
 
-    if (keyString < s) return -1;//操作失败
+    if (keyString < s) {
+        fi.close();
+        fi2.close();
+        return -1;//操作失败
+    }
 
     int lastp = 0;//lastp为node应在块的位置
     int nodep = 0;//nodep为正在遍历的块的位置
@@ -457,8 +466,10 @@ int blocklist::deleteNode(const Node &node) {
             tempBlock.array[tempBlock.num] = Node();
 
             //写入文件
+            fo.open(fname, ios::in | ios::out | ios::binary);
             fo.seekp(lastp, ios::beg);
             fo.write(reinterpret_cast<char *>(&tempBlock), sizeof(Block));
+            fo.close();
 
             //读入下一个块的 num，如果两个块之和够小则合并
             int temp;
@@ -469,6 +480,8 @@ int blocklist::deleteNode(const Node &node) {
                 if (temp + tempBlock.num < BLOCK_MERGE_THRESHOLD)//todo 合并块的判定为两块元素数和<160
                     mergeBlock(lastp, nodep);
             }
+            fi.close();
+            fi2.close();
             return 0;//操作成功
         }
         s = tempBlock.array[++pos].str;
@@ -489,8 +502,10 @@ int blocklist::deleteNode(const Node &node) {
                     tempBlock.array[i] = tempBlock.array[i + 1];
                 tempBlock.array[tempBlock.num] = Node();
 
+                fo.open(fname, ios::in | ios::out | ios::binary);
                 fo.seekp(lastp, ios::beg);
                 fo.write(reinterpret_cast<char *>(&tempBlock), sizeof(Block));
+                fo.close();
 
                 int temp;
                 nodep = nextBlock(lastp);
@@ -500,12 +515,15 @@ int blocklist::deleteNode(const Node &node) {
                     if (temp + tempBlock.num < BLOCK_MERGE_THRESHOLD)
                         mergeBlock(lastp, nodep);
                 }
+                fi.close();
+                fi2.close();
                 return 0;
             }
             s = tempBlock.array[++pos].str;
         }
     }
-
+    fi.close();
+    fi2.close();
     return -1;//操作失败
 }
 

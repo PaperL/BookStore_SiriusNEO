@@ -15,7 +15,7 @@ Bookstore bookstore_cmd;
 int main() {
 
 #ifdef PaperL_Debug
-    cout << "@ Initialization Finish." << endl<<endl;
+    cout << "@ Initialization Finish." << endl << endl;
 #endif
 
 #ifdef FileIO
@@ -38,7 +38,7 @@ int main() {
         bookstore_cmd.operation(inputString);
 
 #ifdef PaperL_Debug
-        cout << "====@ Operation Finish" << endl;
+        //cout << "====@ Operation Finish" << endl << endl;
 #endif
 
         //getline(cin, inputString);

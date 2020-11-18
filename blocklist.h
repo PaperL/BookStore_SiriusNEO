@@ -14,10 +14,10 @@
 #include <string>
 #include <string.h>
 
-#define BLOCK_SIZE 20
-#define BLOCK_SPLIT_THRESHOLD 15
-#define BLOCK_SPLIT_LEFT 10
-#define BLOCK_MERGE_THRESHOLD 5
+#define BLOCK_SIZE 320
+#define BLOCK_SPLIT_THRESHOLD 310
+#define BLOCK_SPLIT_LEFT 100
+#define BLOCK_MERGE_THRESHOLD 50
 
 //#define PaperL_Debug
 

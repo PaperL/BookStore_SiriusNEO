@@ -54,7 +54,7 @@ private:
 
     //inline void fwriteUser(int pri,string id,string passwd,string name);
 
-    inline User freadUser(int offset);
+    inline User freadUser(const int &offset);
     //fwriteUser已直接在useadd和repwd中实现
 
 public:
@@ -66,7 +66,7 @@ public:
 
     int userSelect();
 
-    void changeSelect(int offset);
+    void changeSelect(const int &offset);
 
     void su(string id, string passwd);
 

@@ -45,6 +45,7 @@ UserManager::UserManager() : id_cmd("id.bin"), fname("users.dat") {
         //cout << "Creating blank file \"" << fname << "\" ..." << endl;
 #endif
         fo.open(fname, ios::out | ios::trunc | ios::binary);
+        //fo.clear();
         fo.seekp(0, ios::beg);//设置root账户
         string temps;
         tempUser.privilege = 7;
@@ -56,23 +57,22 @@ UserManager::UserManager() : id_cmd("id.bin"), fname("users.dat") {
         id_cmd.addNode(Node(0, "root"));
     } else fi.close();
 
-    fi.open(fname, ios::in | ios::binary);
+    /*fi.open(fname, ios::in | ios::binary);//todo seekg到文件末后会返回failure -1, 需要clear才能使用
     fip.open(fname, ios::in | ios::binary);
 
     fo.open(fname, ios::in | ios::out | ios::binary);
-    fop.open(fname, ios::in | ios::out | ios::binary);
+    fop.open(fname, ios::in | ios::out | ios::binary);*/
 }
 
 UserManager::~UserManager() {
 #ifdef PaperL_Debug
     cout << "In Destructor \"UserManager\" :" << endl;
 #endif
-    fi.close();
+    /*fi.close();
     fip.close();
 
     fo.close();
-    fop.close();
-
+    fop.close();*/
 }
 
 inline bool UserManager::userStringCheck(userStringTypeEnum userStringType, string arg) {
@@ -90,15 +90,16 @@ inline bool UserManager::userStringCheck(userStringTypeEnum userStringType, stri
     //无空格在切分时已保证，详见bookstore.h内splitString
 }
 
-inline User UserManager::freadUser(int offset) {
+inline User UserManager::freadUser(const int &offset) {
 #ifdef PaperL_Debug
     cout << "In Function \"freadUser\":" << endl;
 #endif
     User tempUser;
-    //fip.open(fname, ios::in | ios::binary);
+    fip.open(fname, ios::in | ios::binary);
+    //fip.clear();
     fip.seekg(offset, ios::beg);
     fip.read(reinterpret_cast<char *>(&tempUser), sizeof(User));
-    //fip.close();
+    fip.close();
     return tempUser;
 }
 
@@ -123,7 +124,7 @@ int UserManager::userSelect() {
     return userStack[userNumber - 1].curBook;
 }
 
-void UserManager::changeSelect(int offset) {
+void UserManager::changeSelect(const int &offset) {
 #ifdef PaperL_Debug
     cout << "In Function \"changeSelect\":" << endl;
 #endif
@@ -156,7 +157,11 @@ void UserManager::su(string id, string passwd) {
     string temps;
     User tempUser;
     tempUser = freadUser(tempVec[0]);
-
+#ifdef PaperL_Debug
+    cout << "freadUser : privilege = " << tempUser.privilege << ", id = \"" << tempUser.id << "\", passwd = \""
+         << tempUser.passwd << "\"" << endl;
+    cout << "            name = \"" << tempUser.name << "\", curBook = " << tempUser.curBook << endl;
+#endif
     if (highPrivilegeCheck == 0) {
         temps = tempUser.passwd;
 #ifdef PaperL_Debug
@@ -237,11 +242,12 @@ void UserManager::useradd(string id, string passwd, int privilege, string name, 
     strcpy(tempUser.id, id.c_str());
     strcpy(tempUser.passwd, passwd.c_str());
     strcpy(tempUser.name, name.c_str());
-    //fo.open(fname, ios::in | ios::out | ios::binary);
+    fo.open(fname, ios::in | ios::out | ios::binary);
+    //fo.clear();
     fo.seekp(0, ios::end);
     Node tempNode((int) fo.tellp(), id);
     fo.write(reinterpret_cast<char *>(&tempUser), sizeof(User));
-    //fo.close();
+    fo.close();
     //添加账户索引
     id_cmd.addNode(tempNode);
 }
@@ -290,10 +296,11 @@ void UserManager::repwd(string id, string oldpwd, string newpwd) {
     } else {//省略或密码正确
         //修改账户密码并写入文件
         strcpy(tempUser.passwd, newpwd.c_str());
-        //fo.open(fname, ios::in | ios::out | ios::binary);
+        fo.open(fname, ios::in | ios::out | ios::binary);
+        //fo.clear();
         fo.seekp(offset, ios::beg);
         fo.write(reinterpret_cast<char *>(&tempUser), sizeof(User));
-        //fo.close();
+        fo.close();
     }
 }
 

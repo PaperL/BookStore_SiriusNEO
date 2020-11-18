@@ -115,7 +115,7 @@ private:
 
     void showFinance(int time = -1);
 
-    void import(int quantity, double price);
+    void import(const int &quantity,const double &price);
 
     void buy(const string &ISBN, const int &quantity);
 
