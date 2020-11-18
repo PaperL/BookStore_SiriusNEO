@@ -27,7 +27,7 @@ public:
     char ISBN[24];
     char name[64];
     char author[64];
-    char keyword[64];//todo keyword是后加的，有一定概率出问题
+    char keyword[64];
     double price;
     int quantity;
 
@@ -52,10 +52,14 @@ private:
     private:
         const string fnameBook, fnameFinance, fnameLog;
         fstream fi, fo;
+
     public:
+
         BookstoreFileManager();
 
         inline void financeInit(int &tradeNum, double &income, double &outgo);
+
+        inline void freadFinance(const int &time);//todo 惊恐地发现BookstoreFileManager::finance系列函数名格式错了
 
         inline void financeBasicWrite(int &num, double &income, double &outgo);//本可以用const的，但是强制类型转换好像不行
 
@@ -75,18 +79,10 @@ private:
         inline void fwriteBook(int offset, Book &arg);
 
 
+        //vector<string> freadLog();
 
-        //此处输出功能原本应由 Bookstore::printBook 实现
-        //但是为了降低空间复杂度在此函数内实现输出
+        //void fwriteLog();
 
-
-        vector<string> freadFinance();
-
-        void fwriteFinance();
-
-        vector<string> freadLog();
-
-        void fwriteLog();
     } bookstoreFile_cmd;
 
     enum logTypeEnum {
@@ -133,9 +129,11 @@ private:
                 string &author, string keyword, const double &price);
 
 public:
+
     Bookstore();
 
     void operation(string cmd);//记得判断权限
+
 };
 
 

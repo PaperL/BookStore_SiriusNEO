@@ -19,9 +19,11 @@ int main() {
 #endif
 
 #ifdef FileIO
-    //freopen("1.txt","r",stdin);
+    freopen("1.txt","r",stdin);
     ifstream inputStream("1.in");//cin重定向至文件
     cin.rdbuf(inputStream.rdbuf());
+    ofstream outputStream("1.ans");
+    cout.rdbuf(outputStream.rdbuf());
     freopen("1.ans","w",stdout);//printf重定向至文件
 #endif
 
@@ -42,7 +44,7 @@ int main() {
         //getline(cin, inputString);
     }
 #ifdef FileIO
-    //fclose(stdin);
+    fclose(stdin);
     fclose(stdout);
 #endif
     return 0;

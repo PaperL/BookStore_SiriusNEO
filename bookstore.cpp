@@ -104,6 +104,34 @@ inline void Bookstore::BookstoreFileManager::financeInit(int &tradeNum, double &
     fi.close();
 }
 
+inline void Bookstore::BookstoreFileManager::freadFinance(const int &time) {
+#ifdef PaperL_Debug
+    cout << "In Function \"freadFinance\":" << endl;
+#endif
+    int tempPtr, tempEdge;
+    double tempPrice;
+    bool tempSgn;
+    int tempTime = time;
+    fi.open(fnameFinance, ios::in | ios::binary);
+    fi.seekg(0, ios::end);
+    tempPtr = fi.tellg();
+    tempPtr -= sizeof(double) + sizeof(bool);
+    tempEdge = sizeof(int) + sizeof(double) + sizeof(double);
+    while (tempPtr >= tempEdge && tempTime > 0) {
+        fi.seekg(tempPtr, ios::beg);
+        fi.read(reinterpret_cast<char *>(&tempPrice), sizeof(double));
+        fi.read(reinterpret_cast<char *>(&tempSgn), sizeof(bool));
+        if (tempSgn)
+            printf("- %.2lf\n", tempPrice);
+        else
+            printf("+ %.2lf\n", tempPrice);
+
+        tempPtr -= sizeof(double) + sizeof(bool);
+        --tempTime;
+    }
+    fi.close();
+}
+
 inline void Bookstore::BookstoreFileManager::financeBasicWrite(int &num, double &income, double &outgo) {
 #ifdef PaperL_Debug
     cout << "In Function \"financeBasicWrite\":" << endl;
@@ -138,6 +166,9 @@ inline void Bookstore::BookstoreFileManager::bookInit(int &bookNum) {
     fi.seekg(0, ios::beg);
     fi.read(reinterpret_cast<char *>(&bookNum), sizeof(int));
     fi.close();
+#ifdef PaperL_Debug
+    cout << "    bookNumber: " << bookNum << endl;
+#endif
 }
 
 inline void Bookstore::BookstoreFileManager::bookBasicWrite(int &bookNum) {
@@ -250,7 +281,7 @@ inline void Bookstore::splitString(string &arg, string &ret, int keywordFlag) {/
 }
 
 inline bool
-Bookstore::bookStringCheck(bookStringTypeEnum bookStringType, const string &arg) {//todo const引用是个好东西,最好能用的都用上
+Bookstore::bookStringCheck(bookStringTypeEnum bookStringType, const string &arg) {
 #ifdef PaperL_Debug
     cout << "    bookStringCheck ";
     if (bookStringType == stringISBN) {
@@ -326,15 +357,20 @@ void Bookstore::addFinance(double price, bool sgn) {//sgn:true支出,false收入
     bookstoreFile_cmd.financeBasicWrite(tradeNumber, totIncome, totExpense);
 }
 
-void Bookstore::showFinance(int time) {
+void Bookstore::showFinance(int time) {//以确保 time 为正，time == -1 时表无 time 参数
     if (!user_cmd.privilegeCheck(7)) {//没有足够权限(3)
         printf("Invalid\n");
         return;
-    }//todo 待实现
+    }
     if (time == -1) {//输出总收入支出
-
+        printf("+ %.2lf - %.2lf\n", totIncome, totExpense);
     } else {//输出最近time次收入支出
-
+        //此处输出功能原本应返回参数再实现
+        //但是为了降低空间复杂度在此函数内实现输出
+        if (time == 0)
+            printf("\n");
+        else
+            bookstoreFile_cmd.freadFinance(time);
     }
 }
 
@@ -373,12 +409,12 @@ void Bookstore::buy(const string &ISBN, const int &quantity) {
             printf("Invalid\n");
             return;
         }
-        if(tempBook.price!=-1) {//todo 为什么标程默认价格0???
+        if (tempBook.price != -1) {//todo 为什么标程默认价格0???
             addFinance(quantity * tempBook.price, false);
             tempBook.quantity -= quantity;
             bookstoreFile_cmd.fwriteBook(user_cmd.userSelect(), tempBook);
             printf("%.2lf\n", tempBook.price * quantity);//输出价格
-        }else{
+        } else {
             addFinance(0, false);
             tempBook.quantity -= quantity;
             bookstoreFile_cmd.fwriteBook(user_cmd.userSelect(), tempBook);
@@ -449,9 +485,9 @@ void Bookstore::modify(const int &offset, const string &ISBN, string &name,
     //offset = user_cmd.userSelect() 已在operation中保证不为 -1
     //price在operation中已保证非负，-1表无值
     if (// !user_cmd.privilegeCheck(3)//没有足够权限(3)
-        !bookStringCheck(stringISBN, ISBN) || !bookStringCheck(stringBookName, name)
-        || !bookStringCheck(stringAuthor, author)
-        || (!ISBN.empty() && find(ISBN) != -1)) {//如果企图改为已存在的ISBN则非法
+            !bookStringCheck(stringISBN, ISBN) || !bookStringCheck(stringBookName, name)
+            || !bookStringCheck(stringAuthor, author)
+            || (!ISBN.empty() && find(ISBN) != -1)) {//如果企图改为已存在的ISBN则非法
 #ifdef PaperL_Debug
         if (!ISBN.empty() && find(ISBN) == -1)
             cout << "    find ISBN fail" << endl;
