@@ -87,12 +87,12 @@ inline User UserManager::freadUser(int offset) {
 bool UserManager::privilegeCheck(int privilegeNeed) {
     if (userStack[userNumber - 1].privilege < privilegeNeed) {//没有足够权限
 #ifdef PaperL_Debug
-        cout << "    privilegeCheck fail" << endl;
+        cout << "    privilegeCheck (" << privilegeNeed << ") fail" << endl;
 #endif
         return false;
     } else {
 #ifdef PaperL_Debug
-        cout << "    privilegeCheck succeed" << endl;
+        cout << "    privilegeCheck (" << privilegeNeed << ") succeed" << endl;
 #endif
         return true;
     }
@@ -148,6 +148,9 @@ void UserManager::su(string id, string passwd) {
         if (passwd == temps) {//检查密码，加入UserStack
             tempUser.curBook = -1;
             ++userNumber;
+#ifdef PaperL_Debug
+            cout << "    privilege:" << tempUser.privilege << "  userNumber:" << userNumber << endl;
+#endif
             userStack.push_back(tempUser);
         }//如果目前没有该账户或密码错误
         else printf("Invalid\n");
@@ -168,8 +171,11 @@ void UserManager::logout() {
     //只要有登录账户，权限必大于等于1
     if (userNumber == 1)
         printf("Invalid\n");
-    else
+    else {
+        userStack.erase(userStack.end() - 1);
+        //Vector加入元素需用push_back，所以logout要删除元素，不能懒惰删除
         --userNumber;
+    }
 }
 
 void UserManager::reg(string id, string passwd, string name) {//注册权限为1账户

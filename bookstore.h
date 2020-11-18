@@ -18,7 +18,7 @@
 #include "blocklist.h"
 #include "usermanager.h"
 
-#define PaperL_Debug
+//#define PaperL_Debug
 
 using namespace std;
 
