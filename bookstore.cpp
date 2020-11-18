@@ -454,8 +454,7 @@ void Bookstore::findplus(findTypeEnum findType, const string &key, vector<int> &
         author_cmd.findNode(key, array);
     } else if (findType == findKeyword) {
         keyword_cmd.findNode(key, array);
-    }
-    else printf("Unexpected findType\n");
+    } else printf("Unexpected findType\n");
 }
 
 void Bookstore::select(const string &ISBN) {
@@ -487,7 +486,7 @@ void Bookstore::modify(const int &offset, const string &ISBN, string &name,
     //price在operation中已保证非负，-1表无值
     if (// !user_cmd.privilegeCheck(3)//没有足够权限(3)
             !bookStringCheck(stringISBN, ISBN) || !bookStringCheck(stringBookName, name)
-            || !bookStringCheck(stringAuthor, author)
+            || !bookStringCheck(stringAuthor, author) || !bookStringCheck(stringAuthor,keyword)
             || (!ISBN.empty() && find(ISBN) != -1)) {//如果企图改为已存在的ISBN则非法
 #ifdef PaperL_Debug
         if (!ISBN.empty() && find(ISBN) == -1)
@@ -499,6 +498,40 @@ void Bookstore::modify(const int &offset, const string &ISBN, string &name,
 
     Book tempBook;//覆盖改写Book内容
     bookstoreFile_cmd.freadBook(offset, tempBook);
+
+    if (!keyword.empty()) {//有return需优先判断
+#ifdef PaperL_Debug
+        cout << "  \"keyword\":" << endl;
+#endif
+        //去除首末双引号
+        keyword = keyword.substr(1, keyword.size() - 2);
+        string temps, temps2;
+        //防止重复 keyword
+        temps2 = keyword;
+        splitString(temps2, temps, 1);
+        while (!temps.empty()) {
+            if (temps2.find(temps) != temps2.npos) {
+                printf("Invalid\n");
+                return;
+            }
+            splitString(temps2, temps, 1);
+        }
+
+        strcpy(tempBook.keyword, keyword.c_str());
+
+        temps2 = tempBook.keyword;//先把旧keyword索引内容删除
+        splitString(temps2, temps, 1);
+        while (!temps.empty()) {
+            keyword_cmd.deleteNode(Node(offset, temps));
+            splitString(temps2, temps, 1);
+        }
+        //加入新Keyword索引
+        splitString(keyword, temps, 1);
+        while (!temps.empty()) {
+            keyword_cmd.addNode(Node(offset, temps));
+            splitString(keyword, temps, 1);
+        }
+    }
     if (!ISBN.empty()) {
 #ifdef PaperL_Debug
         cout << "  \"ISBN\":" << endl;
@@ -524,28 +557,6 @@ void Bookstore::modify(const int &offset, const string &ISBN, string &name,
         author_cmd.deleteNode(Node(offset, tempBook.author));
         author_cmd.addNode(Node(offset, author));
         strcpy(tempBook.author, author.c_str());
-    }
-    if (!keyword.empty()) {
-#ifdef PaperL_Debug
-        cout << "  \"keyword\":" << endl;
-#endif
-        //去除首末双引号
-        keyword = keyword.substr(1, keyword.size() - 2);
-        strcpy(tempBook.keyword, keyword.c_str());
-
-        string temps, temps2;
-        temps2 = tempBook.keyword;//先把旧keyword索引内容删除
-        splitString(temps2, temps, 1);
-        while (!temps.empty()) {
-            keyword_cmd.deleteNode(Node(offset, temps));
-            splitString(temps2, temps, 1);
-        }
-        //加入新Keyword索引
-        splitString(keyword, temps, 1);
-        while (!temps.empty()) {
-            keyword_cmd.addNode(Node(offset, temps));
-            splitString(keyword, temps, 1);
-        }
     }
     if (price != -1) tempBook.price = price;
 
@@ -641,6 +652,7 @@ void Bookstore::operation(string cmd) {
     else if (arg0 == "modify") {
         if (user_cmd.userSelect() != -1 && user_cmd.privilegeCheck(3)) {
             string modifyISBN, modifyName, modifyAuthor, modifyKeyword;
+            //modifyISBN.clear(),modifyName.clear(),modifyAuthor.clear(),modifyKeyword.clear();
             double modifyPrice = -1;
             char invalidFlag = 0;
             splitString(cmd, arg1);

@@ -380,11 +380,11 @@ void blocklist::addNode(const Node &node) {
         fi.read(reinterpret_cast<char *>(&tempBlock), sizeof(Block));
 
         int pos;//用二分lower_bound找到第一个Node[i].str大于等于key的i
-        pos = lower_bound(tempBlock.array, tempBlock.array + tempBlock.num, node) - tempBlock.array;
+        pos = upper_bound(tempBlock.array, tempBlock.array + tempBlock.num, node) - tempBlock.array;
         //找到最大 i 使得 Node[i].str == key, 则 pos = i + 1 减少时间复杂度
         /*s = tempBlock.array[pos].str;
         while (pos < tempBlock.num && s == keyString)
-            s = tempBlock.array[++pos].str;*///todo 一个时间复杂度优化
+            s = tempBlock.array[++pos].str;*///todo 一个时间复杂度优化,已用upper_bound代替
 
         //插入node
         for (int i = tempBlock.num - 1; i >= pos; --i)

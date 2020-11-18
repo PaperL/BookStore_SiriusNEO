@@ -29,15 +29,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3678d20-5d5d-4e0a-8adc-3d69566b594a" name="Default Changelist" comment="1118 Night&#10;猜测为blocklist类出错&#10;发现blocklist类中private函数与public函数共用fstream变量是可能出错原因之一&#10;优化时间复杂度：fstream.open/close在构造/析构函数中完成而非每个成员函数中完成&#10;&#10;blocklist类中文件读写存在恶性bug以及若干小bug&#10;已修复暂时发现的所有bug">
+    <list default="true" id="c3678d20-5d5d-4e0a-8adc-3d69566b594a" name="Default Changelist" comment="1118 deep night 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blocklist.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/blocklist.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blocklist.h" beforeDir="false" afterPath="$PROJECT_DIR$/blocklist.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookstore.h" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usermanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usermanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +92,7 @@
       <workItem from="1605627741981" duration="8421000" />
       <workItem from="1605668216517" duration="1965000" />
       <workItem from="1605688318305" duration="25232000" />
-      <workItem from="1605714221766" duration="6517000" />
+      <workItem from="1605714221766" duration="7921000" />
     </task>
     <task id="LOCAL-00001" summary="1118 Afternoon 2&#10;所有题目需要的功能都已实现&#10;然而正确性堪忧&#10;修改了重定向文件输入输出，感觉依然很可疑">
       <created>1605679690973</created>
@@ -113,7 +108,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605705200805</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="1118 deep night 1">
+      <created>1605720834712</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1605720834712</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -136,7 +138,8 @@
     <MESSAGE value="1118 Afternoon 2&#10;所有题目需要的功能都已实现&#10;修改了重定向文件输入输出，感觉依然很可疑&#10;然而正确性堪忧" />
     <MESSAGE value="1118 Afternoon 2&#10;所有题目需要的功能都已实现&#10;然而正确性堪忧&#10;修改了重定向文件输入输出，感觉依然很可疑" />
     <MESSAGE value="1118 Night&#10;猜测为blocklist类出错&#10;发现blocklist类中private函数与public函数共用fstream变量是可能出错原因之一&#10;优化时间复杂度：fstream.open/close在构造/析构函数中完成而非每个成员函数中完成&#10;&#10;blocklist类中文件读写存在恶性bug以及若干小bug&#10;已修复暂时发现的所有bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="1118 Night&#10;猜测为blocklist类出错&#10;发现blocklist类中private函数与public函数共用fstream变量是可能出错原因之一&#10;优化时间复杂度：fstream.open/close在构造/析构函数中完成而非每个成员函数中完成&#10;&#10;blocklist类中文件读写存在恶性bug以及若干小bug&#10;已修复暂时发现的所有bug" />
+    <MESSAGE value="1118 deep night 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="1118 deep night 1" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1181" y="320" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605025244601">
@@ -147,26 +150,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="445" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1605512382959" />
-    <state width="332" height="707" key="GridCell.Tab.0.bottom" timestamp="1605720742765">
+    <state width="529" height="707" key="GridCell.Tab.0.bottom" timestamp="1605721956707">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="332" height="707" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605720742765" />
-    <state width="332" height="707" key="GridCell.Tab.0.center" timestamp="1605720742764">
+    <state width="529" height="707" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605721956707" />
+    <state width="529" height="707" key="GridCell.Tab.0.center" timestamp="1605721956705">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="332" height="707" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605720742764" />
-    <state width="332" height="707" key="GridCell.Tab.0.left" timestamp="1605720742764">
+    <state width="529" height="707" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605721956705" />
+    <state width="529" height="707" key="GridCell.Tab.0.left" timestamp="1605721956705">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="332" height="707" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605720742764" />
-    <state width="332" height="707" key="GridCell.Tab.0.right" timestamp="1605720742765">
+    <state width="529" height="707" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605721956705" />
+    <state width="529" height="707" key="GridCell.Tab.0.right" timestamp="1605721956706">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="332" height="707" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605720742765" />
+    <state width="529" height="707" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605721956706" />
     <state width="783" height="538" key="GridCell.Tab.1.bottom" timestamp="1605715290600">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
