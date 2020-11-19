@@ -242,9 +242,11 @@ Bookstore::Bookstore() : isbn_cmd("isbn.bin"), name_cmd("name.bin"), author_cmd(
 #ifdef PaperL_Debug
     cout << "In Constructor \"Bookstore\" :" << endl;
 #endif
-    //bookNumber = 0;
+    bookNumber = 0;
+    tradeNumber = 0;
+    totIncome = 0, totExpense = 0;
     bookstoreFile_cmd.financeInit(tradeNumber, totIncome, totExpense);//todo 这里能不能初始化？
-    //bookstoreFile_cmd.bookInit(bookNumber);
+    bookstoreFile_cmd.bookInit(bookNumber);
 }
 
 inline void Bookstore::splitString(string &arg, string &ret, int keywordFlag) {//将arg拆分出第一部分ret
@@ -486,7 +488,7 @@ void Bookstore::modify(const int &offset, const string &ISBN, string &name,
     //price在operation中已保证非负，-1表无值
     if (// !user_cmd.privilegeCheck(3)//没有足够权限(3)
             !bookStringCheck(stringISBN, ISBN) || !bookStringCheck(stringBookName, name)
-            || !bookStringCheck(stringAuthor, author) || !bookStringCheck(stringAuthor,keyword)
+            || !bookStringCheck(stringAuthor, author) || !bookStringCheck(stringAuthor, keyword)
             || (!ISBN.empty() && find(ISBN) != -1)) {//如果企图改为已存在的ISBN则非法
 #ifdef PaperL_Debug
         if (!ISBN.empty() && find(ISBN) == -1)
@@ -496,7 +498,7 @@ void Bookstore::modify(const int &offset, const string &ISBN, string &name,
         return;
     }
 
-    Book tempBook;//覆盖改写Book内容
+    Book tempBook;//读取原Book内容
     bookstoreFile_cmd.freadBook(offset, tempBook);
 
     if (!keyword.empty()) {//有return需优先判断
@@ -517,20 +519,19 @@ void Bookstore::modify(const int &offset, const string &ISBN, string &name,
             splitString(temps2, temps, 1);
         }
 
-        strcpy(tempBook.keyword, keyword.c_str());
-
         temps2 = tempBook.keyword;//先把旧keyword索引内容删除
         splitString(temps2, temps, 1);
         while (!temps.empty()) {
             keyword_cmd.deleteNode(Node(offset, temps));
             splitString(temps2, temps, 1);
         }
-        //加入新Keyword索引
-        splitString(keyword, temps, 1);
+        temps2 = keyword;//加入新Keyword索引
+        splitString(temps2, temps, 1);
         while (!temps.empty()) {
             keyword_cmd.addNode(Node(offset, temps));
-            splitString(keyword, temps, 1);
+            splitString(temps2, temps, 1);
         }
+        strcpy(tempBook.keyword, keyword.c_str());
     }
     if (!ISBN.empty()) {
 #ifdef PaperL_Debug
@@ -652,7 +653,7 @@ void Bookstore::operation(string cmd) {
     else if (arg0 == "modify") {
         if (user_cmd.userSelect() != -1 && user_cmd.privilegeCheck(3)) {
             string modifyISBN, modifyName, modifyAuthor, modifyKeyword;
-            //modifyISBN.clear(),modifyName.clear(),modifyAuthor.clear(),modifyKeyword.clear();
+            modifyISBN.clear(), modifyName.clear(), modifyAuthor.clear(), modifyKeyword.clear();
             double modifyPrice = -1;
             char invalidFlag = 0;
             splitString(cmd, arg1);
@@ -715,7 +716,7 @@ void Bookstore::operation(string cmd) {
     }
         //---------------------------------show
     else if (arg0 == "show") {
-        //author_cmd.debugPrint();//todo 特殊debug函数
+        //keyword_cmd.debugPrint();//todo 特殊debug函数
         if (!cmd.empty()) {//带参数show指令
             splitString(cmd, arg1);
             //show finance

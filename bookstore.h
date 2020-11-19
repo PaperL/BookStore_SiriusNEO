@@ -57,6 +57,7 @@ private:
 
         BookstoreFileManager();
 
+
         inline void financeInit(int &tradeNum, double &income, double &outgo);
 
         inline void freadFinance(const int &time);//todo 惊恐地发现BookstoreFileManager::finance系列函数名格式错了

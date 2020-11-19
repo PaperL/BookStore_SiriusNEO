@@ -68,11 +68,11 @@ UserManager::~UserManager() {
 #ifdef PaperL_Debug
     cout << "In Destructor \"UserManager\" :" << endl;
 #endif
-    /*fi.close();
+    fi.close();
     fip.close();
 
     fo.close();
-    fop.close();*/
+    fop.close();
 }
 
 inline bool UserManager::userStringCheck(userStringTypeEnum userStringType, string arg) {

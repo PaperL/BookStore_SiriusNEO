@@ -32,7 +32,11 @@
     <list default="true" id="c3678d20-5d5d-4e0a-8adc-3d69566b594a" name="Default Changelist" comment="1118 deep night 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blocklist.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/blocklist.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blocklist.h" beforeDir="false" afterPath="$PROJECT_DIR$/blocklist.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookstore.h" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usermanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +97,7 @@
       <workItem from="1605668216517" duration="1965000" />
       <workItem from="1605688318305" duration="25232000" />
       <workItem from="1605714221766" duration="7921000" />
+      <workItem from="1605761320082" duration="7148000" />
     </task>
     <task id="LOCAL-00001" summary="1118 Afternoon 2&#10;所有题目需要的功能都已实现&#10;然而正确性堪忧&#10;修改了重定向文件输入输出，感觉依然很可疑">
       <created>1605679690973</created>
@@ -150,26 +155,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="445" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1605512382959" />
-    <state width="529" height="707" key="GridCell.Tab.0.bottom" timestamp="1605721956707">
+    <state width="326" height="816" key="GridCell.Tab.0.bottom" timestamp="1605768819393">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="529" height="707" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605721956707" />
-    <state width="529" height="707" key="GridCell.Tab.0.center" timestamp="1605721956705">
+    <state width="326" height="816" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605768819393" />
+    <state width="326" height="816" key="GridCell.Tab.0.center" timestamp="1605768819393">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="529" height="707" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605721956705" />
-    <state width="529" height="707" key="GridCell.Tab.0.left" timestamp="1605721956705">
+    <state width="326" height="816" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605768819393" />
+    <state width="326" height="816" key="GridCell.Tab.0.left" timestamp="1605768819392">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="529" height="707" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605721956705" />
-    <state width="529" height="707" key="GridCell.Tab.0.right" timestamp="1605721956706">
+    <state width="326" height="816" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605768819392" />
+    <state width="326" height="816" key="GridCell.Tab.0.right" timestamp="1605768819393">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="529" height="707" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605721956706" />
+    <state width="326" height="816" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605768819393" />
     <state width="783" height="538" key="GridCell.Tab.1.bottom" timestamp="1605715290600">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -216,5 +221,16 @@
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1605172129563" />
     <state x="539" y="183" width="840" height="856" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1605691147125" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/blocklist.cpp</url>
+          <line>310</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

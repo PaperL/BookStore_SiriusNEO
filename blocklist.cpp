@@ -156,6 +156,7 @@ void blocklist::splitBlock(const int &offset) {//leftNum为offset块保留Node�
     tempBlock.pre = offset;
 
     fop.seekp(0, ios::end);
+    fop.clear();
     int temp1 = fop.tellp(), temp2;
 /*#ifdef PaperL_Debug
     //cout << "ios::end = " << temp1 << endl;
@@ -214,7 +215,7 @@ blocklist::~blocklist() {
 #ifdef PaperL_Debug
     cout << "In Destructor \"blocklist\" :" << endl;
 #endif
-    /*fi.close();
+    fi.close();
     fi2.close();
     fip.close();
     fip2.close();
@@ -222,7 +223,7 @@ blocklist::~blocklist() {
     fo.close();
     fo2.close();
     fop.close();
-    fop2.close();*/
+    fop2.close();
 }
 
 void blocklist::findNode(const string &key, vector<int> &array) {
@@ -234,6 +235,7 @@ void blocklist::findNode(const string &key, vector<int> &array) {
 
     array.clear();
     fi2.seekg(0, ios::end);//文件末指针
+    fi2.clear();
     fi.seekg(16, ios::beg);//第一个块的array[0].str起始位置
     if (fi.tellg() < fi2.tellg()) {//遍历查找node所在块
         string s;
@@ -306,7 +308,6 @@ void blocklist::findNode(const string &key, vector<int> &array) {
             if (lastp == -1) break;
             fi.seekg(lastp, ios::beg);
             fi.read(reinterpret_cast<char *>(&tempBlock), sizeof(Block));
-
 /*#ifdef PaperL_Debug
                 cout << "debugPrint------addNode-----\\/" << endl;
                 cout << fname << endl;
@@ -320,7 +321,6 @@ void blocklist::findNode(const string &key, vector<int> &array) {
                 }
                 cout << "debugPrint------------------/\\" << endl;
 #endif*/
-
             pos = 0;
             s = tempBlock.array[0].str;
             while (pos < tempBlock.num && s == key) {
@@ -347,6 +347,7 @@ void blocklist::addNode(const Node &node) {
     fi2.open(fname, ios::in | ios::binary);
 
     fi2.seekg(0, ios::end);//文件末指针
+    fi2.clear();
     fi.seekg(16, ios::beg);//第一个块的array[0].str起始位置
 
     if (fi.tellg() > fi2.tellg()) {//第一次添加Node,新建块与Node
@@ -373,10 +374,9 @@ void blocklist::addNode(const Node &node) {
             s = temps;
         }
         //这里保证 lastp >= 0
-        fi.seekg(lastp, ios::beg);//指向块头
 
         Block tempBlock;//读入整个块
-        fi.seekg(lastp, ios::beg);
+        fi.seekg(lastp, ios::beg);//指向块头
         fi.read(reinterpret_cast<char *>(&tempBlock), sizeof(Block));
 
         int pos;//用二分lower_bound找到第一个Node[i].str大于等于key的i
@@ -414,6 +414,7 @@ int blocklist::deleteNode(const Node &node) {
     fi2.open(fname, ios::in | ios::binary);
 
     fi2.seekg(0, ios::end);//文件末指针
+    fi2.clear();
     fi.seekg(16, ios::beg);//第一个块的array[0].str起始位置
     if (fi.tellg() >= fi2.tellg()) {
         fi.close();
@@ -535,6 +536,7 @@ void blocklist::debugPrint() {
     int debugP;
     Block debugB;
 
+    fip.open(fname, ios::in | ios::binary);
     fip.seekg(0, ios::beg);
     fip.read(reinterpret_cast<char *>(&debugB), sizeof(Block));
     debugP = debugB.nxt;
@@ -542,7 +544,7 @@ void blocklist::debugPrint() {
     cout << "nxt: " << debugB.nxt << endl;
     cout << "pre: " << debugB.pre << endl;
     cout << "num: " << debugB.num << endl;
-    for (int ii = 0; ii < BLOCK_SIZE; ++ii) {
+    for (int ii = 0; ii <= debugB.num + 3; ++ii) {
         cout << ii << ": offset = " << debugB.array[ii].offset
              << "\tstr = \"" << debugB.array[ii].str << "\"" << endl;
     }
@@ -555,12 +557,12 @@ void blocklist::debugPrint() {
         cout << "nxt: " << debugB.nxt << endl;
         cout << "pre: " << debugB.pre << endl;
         cout << "num: " << debugB.num << endl;
-        for (int ii = 0; ii < BLOCK_SIZE; ++ii) {
+        for (int ii = 0; ii <= debugB.num + 3; ++ii) {
             cout << ii << ": offset = " << debugB.array[ii].offset
                  << "\tstr = \"" << debugB.array[ii].str << "\"" << endl;
         }
     }
-
+    fip.close();
     cout << "debugPrint------------------/\\" << endl;
 }
 

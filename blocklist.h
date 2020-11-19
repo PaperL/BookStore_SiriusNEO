@@ -15,9 +15,9 @@
 #include <string.h>
 
 #define BLOCK_SIZE 320
-#define BLOCK_SPLIT_THRESHOLD 310
-#define BLOCK_SPLIT_LEFT 100
-#define BLOCK_MERGE_THRESHOLD 50
+#define BLOCK_SPLIT_THRESHOLD 300
+#define BLOCK_SPLIT_LEFT 150
+#define BLOCK_MERGE_THRESHOLD 30
 
 //#define PaperL_Debug
 
