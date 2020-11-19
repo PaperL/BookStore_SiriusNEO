@@ -109,7 +109,7 @@ inline void Bookstore::BookstoreFileManager::freadFinance(const int &time) {
     cout << "In Function \"freadFinance\":" << endl;
 #endif
     int tempPtr, tempEdge;
-    double tempPrice;
+    double tempPrice, tempIn = 0, tempOut = 0;
     bool tempSgn;
     int tempTime = time;
     fi.open(fnameFinance, ios::in | ios::binary);
@@ -122,13 +122,16 @@ inline void Bookstore::BookstoreFileManager::freadFinance(const int &time) {
         fi.read(reinterpret_cast<char *>(&tempPrice), sizeof(double));
         fi.read(reinterpret_cast<char *>(&tempSgn), sizeof(bool));
         if (tempSgn)
-            printf("- %.2lf\n", tempPrice);
+            tempOut += tempPrice;
+            //printf("- %.2lf\n", tempPrice);
         else
-            printf("+ %.2lf\n", tempPrice);
+            tempIn += tempPrice;
+        //printf("+ %.2lf\n", tempPrice);
 
         tempPtr -= sizeof(double) + sizeof(bool);
         --tempTime;
     }
+    printf("+ %.2lf - %.2lf\n", tempIn, tempOut);
     fi.close();
 }
 
@@ -851,7 +854,9 @@ void Bookstore::operation(string cmd) {
         } else printf("Invalid\n");
     }
         //不合法指令
-    else printf("Invalid\n");
+    else if (!arg0.empty())
+        printf("Invalid\n");
+    //空指令啥都不干
 }
 
 

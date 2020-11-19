@@ -213,7 +213,7 @@ void UserManager::useradd(string id, string passwd, int privilege, string name, 
     cout << "In Function \"useradd\":" << endl;
 #endif
     if (registerFlag == 0//非注册指令,即useradd指令时,需要权限(3)且不能创建比自身权限大的账户
-        && (userStack[userNumber - 1].privilege < 3 || userStack[userNumber - 1].privilege < privilege)) {
+        && (userStack[userNumber - 1].privilege < 3 || userStack[userNumber - 1].privilege <= privilege)) {
         printf("Invalid\n");
         return;
     }
@@ -263,12 +263,14 @@ void UserManager::repwd(string id, string oldpwd, string newpwd) {
     }
     //权限7的账户可以省略oldpwd，但若不省略且输入错误oldpwd，仍为非法操作
     char oldpwdIgnored = 0;
-    if (newpwd.empty() && userStack[userNumber - 1].privilege == 7) {
-        newpwd = oldpwd;
-        oldpwdIgnored = 1;
-    } else if (oldpwd.empty()) {
-        printf("Invalid\n");
-        return;
+    if (newpwd.empty()) {
+        if (userStack[userNumber - 1].privilege == 7) {
+            newpwd = oldpwd;
+            oldpwdIgnored = 1;
+        } else {
+            printf("Invalid\n");
+            return;
+        }
     }
     if (newpwd.empty() || !userStringCheck(stringId, id)
         || !userStringCheck(stringPasswd, oldpwd) || !userStringCheck(stringPasswd, newpwd)) {//判断字符串合法
@@ -288,9 +290,12 @@ void UserManager::repwd(string id, string oldpwd, string newpwd) {
 #endif
     int offset;
     User tempUser;
+    string temps;
+
     offset = tempVec[0];
     tempUser = freadUser(offset);
-    if (oldpwdIgnored == 0 && oldpwd != tempUser.passwd) {
+    temps=tempUser.passwd;
+    if (oldpwdIgnored == 0 && oldpwd != temps) {
         //未省略或不可省略oldpwd情况下密码错误
         printf("Invalid\n");
     } else {//省略或密码正确
