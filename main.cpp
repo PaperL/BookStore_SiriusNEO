@@ -5,7 +5,7 @@
 
 #include "bookstore.h"
 
-#define PaperL_Debug
+//#define PaperL_Debug
 //#define FileIO
 
 using namespace std;

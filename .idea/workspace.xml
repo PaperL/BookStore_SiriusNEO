@@ -29,14 +29,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3678d20-5d5d-4e0a-8adc-3d69566b594a" name="Default Changelist" comment="1118 deep night 1">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blocklist.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/blocklist.cpp" afterDir="false" />
+    <list default="true" id="c3678d20-5d5d-4e0a-8adc-3d69566b594a" name="Default Changelist" comment="1119 Afternoon&#10;多文件输入时有bug&#10;无头绪">
       <change beforePath="$PROJECT_DIR$/blocklist.h" beforeDir="false" afterPath="$PROJECT_DIR$/blocklist.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookstore.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore.h" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usermanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usermanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +93,7 @@
       <workItem from="1605668216517" duration="1965000" />
       <workItem from="1605688318305" duration="25232000" />
       <workItem from="1605714221766" duration="7921000" />
-      <workItem from="1605761320082" duration="7148000" />
+      <workItem from="1605761320082" duration="7728000" />
     </task>
     <task id="LOCAL-00001" summary="1118 Afternoon 2&#10;所有题目需要的功能都已实现&#10;然而正确性堪忧&#10;修改了重定向文件输入输出，感觉依然很可疑">
       <created>1605679690973</created>
@@ -120,7 +116,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605720834712</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="1119 Afternoon&#10;多文件输入时有bug&#10;无头绪">
+      <created>1605768922887</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1605768922887</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,7 +147,8 @@
     <MESSAGE value="1118 Afternoon 2&#10;所有题目需要的功能都已实现&#10;然而正确性堪忧&#10;修改了重定向文件输入输出，感觉依然很可疑" />
     <MESSAGE value="1118 Night&#10;猜测为blocklist类出错&#10;发现blocklist类中private函数与public函数共用fstream变量是可能出错原因之一&#10;优化时间复杂度：fstream.open/close在构造/析构函数中完成而非每个成员函数中完成&#10;&#10;blocklist类中文件读写存在恶性bug以及若干小bug&#10;已修复暂时发现的所有bug" />
     <MESSAGE value="1118 deep night 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="1118 deep night 1" />
+    <MESSAGE value="1119 Afternoon&#10;多文件输入时有bug&#10;无头绪" />
+    <option name="LAST_COMMIT_MESSAGE" value="1119 Afternoon&#10;多文件输入时有bug&#10;无头绪" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1181" y="320" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605025244601">
@@ -199,10 +203,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="840" y="433" key="VCS.EditChangelistDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605066196455" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1605679696231">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1605768929954">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1605679696231" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1605768929954" />
     <state x="610" y="343" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605162750224">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
