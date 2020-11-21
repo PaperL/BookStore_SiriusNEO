@@ -234,7 +234,15 @@ inline void Bookstore::BookstoreFileManager::fwriteBook(int offset, Book &arg) {
     fo.close();
 }
 
+#ifdef bonusFunction
+void Bookstore::BookstoreFileManager::freadLog() {
 
+}
+
+void Bookstore::BookstoreFileManager::fwriteLog() {
+
+}
+#endif
 
 //================================
 //========== Bookstore ===========
@@ -344,12 +352,23 @@ inline void Bookstore::printBook(const Book &arg) {
         printf("%s\t%s\t%s\t%s\t%.2lf\t%d\n", arg.ISBN, arg.name, arg.author, arg.keyword, arg.price, arg.quantity);
 }
 
+#ifdef bonusFunction
+
 void Bookstore::showLog(logTypeEnum logType) {
     //todo 待实现
     if (logType == reportLog) {
+        bookstoreFile_cmd.freadLog();
+    } else if (logType == reportFinance) {
+
+    } else if (logType == reportEmployee) {
+
+    } else if (logType == reportMyself){
 
     }
 }
+
+#endif
+
 
 void Bookstore::addFinance(double price, bool sgn) {//sgn:true支出,false收入
 #ifdef PaperL_Debug
@@ -570,6 +589,9 @@ void Bookstore::modify(const int &offset, const string &ISBN, string &name,
 
 void Bookstore::operation(string cmd) {
     //本函数保证调用其他函数时的参数为非空无空白字符字符串或正常整形变量
+#ifdef bonusFunction
+
+#endif
     string arg0, arg1, arg2, arg3;
     splitString(cmd, arg0);//提取出命令类型arg0
 
@@ -836,6 +858,7 @@ void Bookstore::operation(string cmd) {
 
         splitString(cmd, arg0);
         if (arg0.empty()) {
+#ifdef bonusFunction
             if (arg1 == "finance")
                 showLog(reportFinance);
             else if (arg1 == "employee")
@@ -843,15 +866,18 @@ void Bookstore::operation(string cmd) {
             else if (arg1 == "myself")
                 showLog(reportMyself);
             else
-                printf("Invalid\n");
+#endif
+            printf("Invalid\n");
         } else printf("Invalid\n");
     }
         //---------------------------------log
     else if (arg0 == "log") {
         splitString(cmd, arg0);
+#ifdef bonusFunction
         if (arg0.empty()) {
             showLog(reportLog);
         } else printf("Invalid\n");
+#endif
     }
         //不合法指令
     else if (!arg0.empty())

@@ -29,12 +29,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3678d20-5d5d-4e0a-8adc-3d69566b594a" name="Default Changelist" comment="1119 Afternoon 2&#10;The End?">
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+    <list default="true" id="c3678d20-5d5d-4e0a-8adc-3d69566b594a" name="Default Changelist" comment="1119 deep night&#10;score: 7.8&#10;Complex Testpoint 1 Failed&#10;Complex Testpoint 4 Failed&#10;Complex Testpoint 5 Failed&#10;错误依旧是类似数据损坏">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookstore.h" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/usermanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/usermanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,12 +65,12 @@
     <property name="settings.editor.selected.configurable" value="CPPToolchains" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="BookStore_SiriusNEO" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="code" TARGET_NAME="BookStore_SiriusNEO" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="code" RUN_TARGET_NAME="BookStore_SiriusNEO">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BookStore_SiriusNEO" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="code" TARGET_NAME="BookStore_SiriusNEO" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="code" RUN_TARGET_NAME="BookStore_SiriusNEO">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -112,7 +113,8 @@
       <workItem from="1605799762522" duration="4916000" />
       <workItem from="1605806107832" duration="405000" />
       <workItem from="1605806523349" duration="250000" />
-      <workItem from="1605806782456" duration="3782000" />
+      <workItem from="1605806782456" duration="3894000" />
+      <workItem from="1605960393605" duration="16131000" />
     </task>
     <task id="LOCAL-00001" summary="1118 Afternoon 2&#10;所有题目需要的功能都已实现&#10;然而正确性堪忧&#10;修改了重定向文件输入输出，感觉依然很可疑">
       <created>1605679690973</created>
@@ -149,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605769527535</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="1119 deep night&#10;score: 7.8&#10;Complex Testpoint 1 Failed&#10;Complex Testpoint 4 Failed&#10;Complex Testpoint 5 Failed&#10;错误依旧是类似数据损坏">
+      <created>1605810787666</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1605810787666</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,7 +184,8 @@
     <MESSAGE value="1118 deep night 1" />
     <MESSAGE value="1119 Afternoon&#10;多文件输入时有bug&#10;无头绪" />
     <MESSAGE value="1119 Afternoon 2&#10;The End?" />
-    <option name="LAST_COMMIT_MESSAGE" value="1119 Afternoon 2&#10;The End?" />
+    <MESSAGE value="1119 deep night&#10;score: 7.8&#10;Complex Testpoint 1 Failed&#10;Complex Testpoint 4 Failed&#10;Complex Testpoint 5 Failed&#10;错误依旧是类似数据损坏" />
+    <option name="LAST_COMMIT_MESSAGE" value="1119 deep night&#10;score: 7.8&#10;Complex Testpoint 1 Failed&#10;Complex Testpoint 4 Failed&#10;Complex Testpoint 5 Failed&#10;错误依旧是类似数据损坏" />
   </component>
   <component name="WindowStateProjectService">
     <state x="536" y="164" key="#SSH_Configurations" timestamp="1605800915799">
@@ -194,26 +204,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="445" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1605512382959" />
-    <state width="321" height="676" key="GridCell.Tab.0.bottom" timestamp="1605810008106">
+    <state width="246" height="677" key="GridCell.Tab.0.bottom" timestamp="1605975845701">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="321" height="676" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605810008106" />
-    <state width="321" height="676" key="GridCell.Tab.0.center" timestamp="1605810008106">
+    <state width="246" height="677" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605975845701" />
+    <state width="246" height="677" key="GridCell.Tab.0.center" timestamp="1605975845700">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="321" height="676" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605810008106" />
-    <state width="321" height="676" key="GridCell.Tab.0.left" timestamp="1605810008106">
+    <state width="246" height="677" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605975845700" />
+    <state width="246" height="677" key="GridCell.Tab.0.left" timestamp="1605975845700">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="321" height="676" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605810008106" />
-    <state width="321" height="676" key="GridCell.Tab.0.right" timestamp="1605810008106">
+    <state width="246" height="677" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605975845700" />
+    <state width="246" height="677" key="GridCell.Tab.0.right" timestamp="1605975845700">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="321" height="676" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605810008106" />
+    <state width="246" height="677" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605975845700" />
     <state width="783" height="538" key="GridCell.Tab.1.bottom" timestamp="1605715290600">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -234,23 +244,23 @@
     </state>
     <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1605521118116" />
     <state width="783" height="538" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605715290600" />
-    <state x="461" y="164" key="SettingsEditor" timestamp="1605806808650">
+    <state x="461" y="164" key="SettingsEditor" timestamp="1605962914703">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1605806808650" />
+    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1605962914703" />
     <state x="840" y="433" key="VCS.EditChangelistDialog" timestamp="1605066196455">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="840" y="433" key="VCS.EditChangelistDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605066196455" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1605769531942">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1605810828983">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1605769531942" />
-    <state x="610" y="343" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605162750224">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1605810828983" />
+    <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605960410888">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="610" y="343" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1605162750224" />
-    <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1605063599614" />
+    <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1605960410888" />
     <state x="502" y="249" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1605628499934">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
