@@ -26,6 +26,6 @@
 
 ## 其他
 
-- 题面见['Bookstore-2020'](https://github.com/cmd2001/Bookstore-2020)
+- 题面见[`Bookstore-2020`](https://github.com/cmd2001/Bookstore-2020)
 
 - 编码者PaperL写的开发文档见[`BookStore文档 仇天元 V1.0.md`](https://github.com/PaperL/BookStore_SiriusNEO/blob/master/BookStore%E6%96%87%E6%A1%A3%20%E4%BB%87%E5%A4%A9%E5%85%83%20%20V1.0.md)
