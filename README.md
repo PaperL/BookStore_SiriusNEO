@@ -28,4 +28,4 @@
 
 - 题面见[`Bookstore-2020`](https://github.com/cmd2001/Bookstore-2020)
 
-- 编码者PaperL写的开发文档见[`PaperL's BookStore文档`](https://github.com/PaperL/BookStore_SiriusNEO/blob/master/PaperL's%20BookStore)
+- 编码者PaperL写的开发文档见[`PaperL's BookStore文档`](https://github.com/PaperL/BookStore_SiriusNEO/blob/master/PaperL's%20BookStore.md)
