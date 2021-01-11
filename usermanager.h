@@ -16,7 +16,6 @@
 #include "blocklist.h"
 
 //#define PaperL_Debug
-#define bonusFunction
 
 using namespace std;
 
@@ -59,7 +58,6 @@ private:
     //fwriteUser已直接在useadd和repwd中实现
 
 public:
-
     UserManager();
 
     ~UserManager();
@@ -82,11 +80,6 @@ public:
 
     void del(string id);
 
-#ifdef bonusFunction
-
-    void getUserInfo(string &userID, string &userName, int &privilege);
-
-#endif
 
 };
 

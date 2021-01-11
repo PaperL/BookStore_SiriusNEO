@@ -83,11 +83,23 @@ inline void blocklist::delBlock(const int &offset) {//删除块
     fip.read(reinterpret_cast<char *>(&nxt), 4);
     fip.read(reinterpret_cast<char *>(&pre), 4);
 
-    fop.seekp(pre, ios::beg);//类似链表删除节点
-    fop.write(reinterpret_cast<char *>(&nxt), 4);
-    fop.seekp(nxt + 4, ios::beg);
-    fop.write(reinterpret_cast<char *>(&pre), 4);
+#ifdef PaperL_Debug
+    cout << "offset: " << offset << ", pre: " << pre << ", nxt: " << nxt << endl;
+#endif
 
+    if (pre == -1) {//删除头块需实际清空
+        Block tempBlock;
+        fop.seekp(0, ios::beg);
+        fop.write(reinterpret_cast<char *>(&tempBlock), sizeof(Block));
+    } else {
+        fop.seekp(pre, ios::beg);//类似链表删除节点
+        fop.write(reinterpret_cast<char *>(&nxt), 4);
+    }
+
+    if (nxt != -1) {
+        fop.seekp(nxt + 4, ios::beg);
+        fop.write(reinterpret_cast<char *>(&pre), 4);
+    }
     fip.close();
     fop.close();
 }
@@ -334,6 +346,7 @@ void blocklist::findNode(const string &key, vector<int> &array) {
     fi2.close();
 #ifdef PaperL_Debug
     cout << "\"findNode\" finish." << endl;
+    debugPrint();
 #endif
 }
 
@@ -409,6 +422,8 @@ void blocklist::addNode(const Node &node) {
 int blocklist::deleteNode(const Node &node) {
 #ifdef PaperL_Debug
     cout << "In Function \"deleteNode\":" << endl;
+    if (fname == "keyword.bin")
+        cout << "    keyword del: " << node.str << endl;
 #endif
     fi.open(fname, ios::in | ios::binary);
     fi2.open(fname, ios::in | ios::binary);
@@ -462,6 +477,12 @@ int blocklist::deleteNode(const Node &node) {
     while (pos < tempBlock.num && s == keyString) {
         if (tempBlock.array[pos].offset == node.offset) {//需要str和offset都匹配
             --tempBlock.num;
+            if (tempBlock.num == 0) {//如果为空则删除该块
+                delBlock(lastp);
+                fi.close();
+                return 0;
+            }
+
             for (int i = pos; i < tempBlock.num; ++i) //删除tempBlock.array[pos]
                 tempBlock.array[i] = tempBlock.array[i + 1];
             tempBlock.array[tempBlock.num] = Node();
@@ -482,7 +503,6 @@ int blocklist::deleteNode(const Node &node) {
                     mergeBlock(lastp, nodep);
             }
             fi.close();
-            fi2.close();
             return 0;//操作成功
         }
         s = tempBlock.array[++pos].str;
@@ -499,6 +519,12 @@ int blocklist::deleteNode(const Node &node) {
         while (pos < tempBlock.num && s == keyString) {
             if (tempBlock.array[pos].offset == node.offset) {
                 --tempBlock.num;
+                if (tempBlock.num == 0) {//如果为空则删除该块
+                    delBlock(lastp);
+                    fi.close();
+                    return 0;
+                }
+
                 for (int i = pos; i < tempBlock.num; ++i)
                     tempBlock.array[i] = tempBlock.array[i + 1];
                 tempBlock.array[tempBlock.num] = Node();
@@ -517,14 +543,12 @@ int blocklist::deleteNode(const Node &node) {
                         mergeBlock(lastp, nodep);
                 }
                 fi.close();
-                fi2.close();
                 return 0;
             }
             s = tempBlock.array[++pos].str;
         }
     }
     fi.close();
-    fi2.close();
     return -1;//操作失败
 }
 

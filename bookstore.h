@@ -19,7 +19,6 @@
 #include "usermanager.h"
 
 //#define PaperL_Debug
-#define bonusFunction
 
 using namespace std;
 
@@ -80,25 +79,16 @@ private:
 
         inline void fwriteBook(int offset, Book &arg);
 
-#ifdef bonusFunction
 
-        void freadLog();
+        //vector<string> freadLog();
 
-        void fwriteLog();
-
-#endif
+        //void fwriteLog();
 
     } bookstoreFile_cmd;
-
-#ifdef bonusFunction
 
     enum logTypeEnum {
         reportMyself, reportEmployee, reportLog, reportFinance
     };
-
-    void showLog(logTypeEnum logType);
-
-#endif
 
     enum findTypeEnum {
         findName, findAuthor, findKeyword
@@ -116,13 +106,17 @@ private:
 
     inline bool bookStringCheck(bookStringTypeEnum bookStringType, const string &arg);
 
+    //inline Book freadBook(int offset);
+
     inline void printBook(const Book &arg);
+
+    void showLog(logTypeEnum logType);
 
     void addFinance(double price, bool sgn);
 
     void showFinance(int time = -1);
 
-    void import(const int &quantity, const double &price);
+    void import(const int &quantity,const double &price);
 
     void buy(const string &ISBN, const int &quantity);
 
@@ -132,23 +126,14 @@ private:
 
     void select(const string &ISBN);
 
-    void modify(const int &offset, const string &ISBN, string &name,
-                string &author, string keyword, const double &price);
+    void modify(const int &offset, const string &ISBN, string name,
+                string author, string keyword, const double &price);
 
 public:
 
     Bookstore();
 
     void operation(string cmd);//记得判断权限
-
-#ifdef bonusFunction
-
-    void getInfo(int &privilege, string &userName) {
-        string temps;
-        user_cmd.getUserInfo(temps, userName, privilege);
-    }
-
-#endif
 
 };
 

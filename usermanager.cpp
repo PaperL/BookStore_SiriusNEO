@@ -294,7 +294,7 @@ void UserManager::repwd(string id, string oldpwd, string newpwd) {
 
     offset = tempVec[0];
     tempUser = freadUser(offset);
-    temps = tempUser.passwd;
+    temps=tempUser.passwd;
     if (oldpwdIgnored == 0 && oldpwd != temps) {
         //未省略或不可省略oldpwd情况下密码错误
         printf("Invalid\n");
@@ -343,18 +343,3 @@ void UserManager::del(string id) {
     } else printf("Invalid\n");
 }
 
-#ifdef bonusFunction
-
-void UserManager::getUserInfo(string &userID, string &userName, int &privilege) {
-    if (userNumber > 1) {
-        userID = userStack[userNumber - 1].id;
-        userName = userStack[userNumber - 1].name;
-        privilege = userStack[userNumber - 1].privilege;
-    } else {
-        userID = "Unauthenticated User";
-        userName.clear();
-        privilege = 0;
-    }
-}
-
-#endif
