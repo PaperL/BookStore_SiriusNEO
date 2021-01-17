@@ -374,8 +374,10 @@ void Bookstore::showFinance(int time) {//以确保 time 为正，time == -1 时�
         //但是为了降低空间复杂度在此函数内实现输出
         if (time == 0)
             printf("\n");
-        else
+        else if (time <= tradeNumber)
+            //cout << "TradeNumber: " << tradeNumber << endl;
             bookstoreFile_cmd.freadFinance(time);
+        else printf("Invalid\n");
     }
 }
 
@@ -514,10 +516,16 @@ void Bookstore::modify(const int &offset, const string &ISBN, string name,
         //防止重复 keyword
         temps2 = keyword;
         splitString(temps2, temps, 1);
+
         while (!temps.empty()) {
-            if (temps2.find(temps) != temps2.npos) {
-                printf("Invalid\n");
-                return;
+            auto findPos = temps2.find(temps);
+            if (findPos != string::npos) {
+                if (temps2[findPos - 1] == '|' && temps2[findPos + temps.length()] == '|')
+                //todo 原本无内层 if 导致错误输出 Invalid
+                {
+                    printf("Invalid\n");
+                    return;
+                }
             }
             splitString(temps2, temps, 1);
         }

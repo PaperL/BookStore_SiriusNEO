@@ -2,7 +2,7 @@
 
 - Author: PaperL
 
-- Version: 1.0
+- Version: 1.1
 
 
 
@@ -18,7 +18,7 @@
 
 ## 全局变量
 
-- 当前状态	*(存储于`Data_Basic.dat`)*
+- 当前状态	*(存储于`BasicData.dat`)*
     | 变量内容                          | 变量类型                 | 备注         |
     | --------------------------------- | ------------------------ | ------------ |
     | 已登录账号及该账号选中的图书      | 以`Vector<user>`实现的栈 | 不保存至文件 |
@@ -33,7 +33,7 @@
     - `keywordFlag`决定分隔符是否为`'|'`
     - 该函数功能包括鲁棒性处理
 - stringCheck(enum 字符串类型, string arg)
-    
+  
     - 鲁棒性判断
 - privilegeCheck(int strict);
 - **init**() **初始化函数*
@@ -52,7 +52,7 @@
 # CommandManager`.h/.cpp`
 
 - **command 指令类**
-  - 指令参数	*(存储于`Data_Basic.dat`)*
+  - 指令参数	*(存储于`Data_Command.dat`)*
     | 变量内容            | 变量类型 |
     | ------------------- | -------- |
     | 指令类型            | 枚举     |
@@ -61,7 +61,7 @@
     | 执行情况(成功/失败) | 布尔     |
     | 操作时间(time())    | 长长整型 |
 - runCommand(string arg)
-- recordCommand(command t)
+- recordCommand(command arg)
 
 
 
@@ -102,9 +102,21 @@
 	    | quantity | 整形 |
 - select(string ISBN)
 - modify(string arg)
+- show(string arg)
+
+
+- **entry 账本条目类**
+    - 图书参数	*(`Data_Book.dat`用)*
+        | 变量名 | 变量类型 |
+        | ---- | ---- |
+        | time    | 长长整型 |
+        | userID | 字符数组 max length: 30 |
+        | ISBN | 字符数组 max length: 20 |
+	    | quantity *(正数表示购买，负数表示进货)* | 整形 |
+	    | price | 浮点数 |
+	    | totalPrice | 浮点数 |
 - import(int num, int price)
 - buy(string ISBN, int num)
-- show(string arg)
 
 
 
@@ -116,44 +128,45 @@
     - readIndexData(string arg, char type)
     - deleteUserIndexData(string userID)
 
-<!--注意此处仅列出了public函数，private中需要有string fileName, nextBlock函数, deleteBlock函数, mergeBlock函数, splitBlock函数, hash函数等-->
+<!--注意此处仅列出了public函数，private中内容参考: string fileName, nextBlock函数, deleteBlock函数, mergeBlock函数, splitBlock函数, hash函数等-->
 
 <!--以下为块状链表内建议的数据类型-->
 
 ```c++
-class element {
+class Element {
 public:
     int offset;
     char str[64];
 
-    bool operator<(const element &x) const;
-    Node(const int &arg1 = -1, const string &arg2 = "");
-    Node &operator=(const element &right);
+    bool operator<(const Element &x) const;
+    Element(const int &arg1 = -1, const string &arg2 = "");
+    Element &operator=(const Element &right);
 };
 
-class node {
+class Node {
 public:
     int nxt;
     int pre;
     int num;
-    Node array[ELEMENT_NUMBER];
+    Element array[ELEMENT_NUMBER];
 
-    Block();
-    Block &operator=(const node &right);
+    Node();
+    Node &operator=(const Node &right);
 };
 ```
 
 # BasicFileManager`.h/.cpp`
 
-- writeBasicData(enum 参数类型, void\* 参数引用)
-- readBasicData(enum 参数类型, void\* 参数引用)
+**以下函数使用模板函数实现**
 
-**使用模板函数实现**
+读写`BasicData.dat`
+- writeBasicData(enum 参数类型, T arg)
+- readBasicData(enum 参数类型, T arg)
 
+读写除`BasicData`外其他`Data_*.dat`文件
 - writeData(T arg, int offset = -1)
-    - `offset`为`-1`表示在文件末追加写入，否则在指定位置覆盖写入
+  - `offset`为`-1`表示在文件末追加写入，否则在指定位置覆盖写入
 - readData(int offset)
-
 
 
 
@@ -161,8 +174,12 @@ public:
 
 **软件运行所需文件及其功能**
 
-- **Data_Basic**.dat
-  - 见 **Bookstore** 部分
+- **BasicData**.dat
+  - 存储部分全局变量，见 **Bookstore** 部分
+- **Data_Command**.dat
+  - 按创建顺序存储`command`对象
+- **Data_Finance**.dat
+  - 按创建顺序存储`entry`对象
 - **Data_User**.dat
   - 按创建顺序存储`user`对象
 - **Data_Book**.dat

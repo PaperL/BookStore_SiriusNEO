@@ -35,6 +35,7 @@ int main() {
         //cout << "====@ Operation : \"" << inputString << "\"" << endl;
         cout << "<" << inputString << ">:\n";
 #endif
+        //cout << "#" + inputString << endl;
         bookstore_cmd.operation(inputString);
 
 #ifdef PaperL_Debug

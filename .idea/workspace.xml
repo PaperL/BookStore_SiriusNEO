@@ -29,13 +29,18 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c3678d20-5d5d-4e0a-8adc-3d69566b594a" name="Default Changelist" comment="1119 deep night&#10;score: 7.8&#10;Complex Testpoint 1 Failed&#10;Complex Testpoint 4 Failed&#10;Complex Testpoint 5 Failed&#10;错误依旧是类似数据损坏">
+    <list default="true" id="c3678d20-5d5d-4e0a-8adc-3d69566b594a" name="Default Changelist" comment="2021.1.11 夜晚&#10;将代码文件重置为 Code Review 时所用版本&#10;修复了 Blocklist 中两个bug&#10;删除空块/删除首块&#10;Advanced Data测试通过">
+      <change beforePath="$PROJECT_DIR$/.idea/BookStore_SiriusNEO.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/BookStore_SiriusNEO.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BookStore Notebook.txt" beforeDir="false" afterPath="$PROJECT_DIR$/BookStore Notebook.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bookstore Document by lcf.md" beforeDir="false" afterPath="$PROJECT_DIR$/Bookstore Document by lcf.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PaperL's BookStore.md" beforeDir="false" afterPath="$PROJECT_DIR$/PaperL's BookStore.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookstore.h" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usermanager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/usermanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/usermanager.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,8 +118,15 @@
       <workItem from="1605799762522" duration="4916000" />
       <workItem from="1605806107832" duration="405000" />
       <workItem from="1605806523349" duration="250000" />
-      <workItem from="1605806782456" duration="3894000" />
-      <workItem from="1605960393605" duration="16131000" />
+      <workItem from="1605806782456" duration="3782000" />
+      <workItem from="1610365612576" duration="4747000" />
+      <workItem from="1610389768015" duration="615000" />
+      <workItem from="1610444478524" duration="48000" />
+      <workItem from="1610616259367" duration="613000" />
+      <workItem from="1610794858030" duration="842000" />
+      <workItem from="1610795908801" duration="608000" />
+      <workItem from="1610803453808" duration="31000" />
+      <workItem from="1610873364223" duration="5640000" />
     </task>
     <task id="LOCAL-00001" summary="1118 Afternoon 2&#10;所有题目需要的功能都已实现&#10;然而正确性堪忧&#10;修改了重定向文件输入输出，感觉依然很可疑">
       <created>1605679690973</created>
@@ -151,12 +163,12 @@
       <option name="project" value="LOCAL" />
       <updated>1605769527535</updated>
     </task>
-    <task id="LOCAL-00006" summary="1119 deep night&#10;score: 7.8&#10;Complex Testpoint 1 Failed&#10;Complex Testpoint 4 Failed&#10;Complex Testpoint 5 Failed&#10;错误依旧是类似数据损坏">
-      <created>1605810787666</created>
+    <task id="LOCAL-00006" summary="2021.1.11 夜晚&#10;将代码文件重置为 Code Review 时所用版本&#10;修复了 Blocklist 中两个bug&#10;删除空块/删除首块&#10;Advanced Data测试通过">
+      <created>1610370336341</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1605810787666</updated>
+      <updated>1610370336341</updated>
     </task>
     <option name="localTasksCounter" value="7" />
     <servers />
@@ -184,8 +196,8 @@
     <MESSAGE value="1118 deep night 1" />
     <MESSAGE value="1119 Afternoon&#10;多文件输入时有bug&#10;无头绪" />
     <MESSAGE value="1119 Afternoon 2&#10;The End?" />
-    <MESSAGE value="1119 deep night&#10;score: 7.8&#10;Complex Testpoint 1 Failed&#10;Complex Testpoint 4 Failed&#10;Complex Testpoint 5 Failed&#10;错误依旧是类似数据损坏" />
-    <option name="LAST_COMMIT_MESSAGE" value="1119 deep night&#10;score: 7.8&#10;Complex Testpoint 1 Failed&#10;Complex Testpoint 4 Failed&#10;Complex Testpoint 5 Failed&#10;错误依旧是类似数据损坏" />
+    <MESSAGE value="2021.1.11 夜晚&#10;将代码文件重置为 Code Review 时所用版本&#10;修复了 Blocklist 中两个bug&#10;删除空块/删除首块&#10;Advanced Data测试通过" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021.1.11 夜晚&#10;将代码文件重置为 Code Review 时所用版本&#10;修复了 Blocklist 中两个bug&#10;删除空块/删除首块&#10;Advanced Data测试通过" />
   </component>
   <component name="WindowStateProjectService">
     <state x="536" y="164" key="#SSH_Configurations" timestamp="1605800915799">
@@ -204,26 +216,30 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="445" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1605512382959" />
-    <state width="246" height="677" key="GridCell.Tab.0.bottom" timestamp="1605975845701">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1610616271121">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1610616271121" />
+    <state width="439" height="677" key="GridCell.Tab.0.bottom" timestamp="1610390748175">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="246" height="677" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605975845701" />
-    <state width="246" height="677" key="GridCell.Tab.0.center" timestamp="1605975845700">
+    <state width="439" height="677" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1610390748175" />
+    <state width="439" height="677" key="GridCell.Tab.0.center" timestamp="1610390748174">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="246" height="677" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605975845700" />
-    <state width="246" height="677" key="GridCell.Tab.0.left" timestamp="1605975845700">
+    <state width="439" height="677" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1610390748174" />
+    <state width="439" height="677" key="GridCell.Tab.0.left" timestamp="1610390748174">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="246" height="677" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605975845700" />
-    <state width="246" height="677" key="GridCell.Tab.0.right" timestamp="1605975845700">
+    <state width="439" height="677" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1610390748174" />
+    <state width="439" height="677" key="GridCell.Tab.0.right" timestamp="1610390748175">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="873" height="405" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605669842066" />
-    <state width="246" height="677" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605975845700" />
+    <state width="439" height="677" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1610390748175" />
     <state width="783" height="538" key="GridCell.Tab.1.bottom" timestamp="1605715290600">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -244,23 +260,23 @@
     </state>
     <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1605521118116" />
     <state width="783" height="538" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605715290600" />
-    <state x="461" y="164" key="SettingsEditor" timestamp="1605962914703">
+    <state x="461" y="164" key="SettingsEditor" timestamp="1610880955956">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1605962914703" />
+    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1610880955956" />
     <state x="840" y="433" key="VCS.EditChangelistDialog" timestamp="1605066196455">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="840" y="433" key="VCS.EditChangelistDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605066196455" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1605810828983">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1610370343008">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1605810828983" />
-    <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605960410888">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1610370343008" />
+    <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1610365743521">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="610" y="343" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1605162750224" />
-    <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1605960410888" />
+    <state x="763" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1610365743521" />
     <state x="502" y="249" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1605628499934">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -269,21 +285,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="970" y="244" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1605367305660" />
-    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup" timestamp="1605691147125">
+    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup" timestamp="1610365854385">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1605172129563" />
-    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1605691147125" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/blocklist.cpp</url>
-          <line>310</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1610365854385" />
   </component>
 </project>
