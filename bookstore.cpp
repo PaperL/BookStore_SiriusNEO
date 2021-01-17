@@ -520,8 +520,9 @@ void Bookstore::modify(const int &offset, const string &ISBN, string name,
         while (!temps.empty()) {
             auto findPos = temps2.find(temps);
             if (findPos != string::npos) {
-                if (temps2[findPos - 1] == '|' && temps2[findPos + temps.length()] == '|')
-                //todo 原本无内层 if 导致错误输出 Invalid
+                if ((findPos == 0 || temps2[findPos - 1] == '|')
+                    && (findPos + temps.length() == temps2.length() || temps2[findPos + temps.length()] == '|'))
+                    //todo 原本无内层 if 导致错误输出 Invalid
                 {
                     printf("Invalid\n");
                     return;
