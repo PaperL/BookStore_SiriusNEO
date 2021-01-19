@@ -2,7 +2,7 @@
 
 - Author: PaperL
 
-- Version: 1.1
+- Version: 1.15
 
 
 
@@ -16,29 +16,33 @@
 
 # BookStore`.h/.cpp`
 
-## 全局变量
+### 全局变量 
 
-- 当前状态	*(存储于`BasicData.dat`)*
-    | 变量内容                          | 变量类型                 | 备注         |
-    | --------------------------------- | ------------------------ | ------------ |
-    | 已登录账号及该账号选中的图书      | 以`Vector<user>`实现的栈 | 不保存至文件 |
-    | 选中图书在`Data_Book.dat`中的地址 | 整型                     | 不保存至文件 |
-    | 总交易次数                        | 整型                     |              |
-    | 总支出                            | 浮点型                   |              |
-    | 总收入                            | 浮点型                   |              |
-| 图书总数量                        | 整型                     |              |
-    
+- *(存储于`BasicData.dat`)*
+  
+    | 变量内容                          | 变量类型                             | 备注         |
+    | --------------------------------- | ------------------------------------ | ------------ |
+    | 已登录账号及该账号选中的图书      | 以`vector<pair<user,ISBN> >`实现的栈 | 不保存至文件 |
+    | 选中图书在`Data_Book.dat`中的地址 | 整型                                 | 不保存至文件 |
+    | 总交易次数                        | 整型                                 |              |
+    | 总支出                            | 浮点型                               |              |
+    | 总收入                            | 浮点型                               |              |
+    | 图书总数量                        | 整型                                 |              |
+
+### 基础函数
+
 - splitString(string &arg, string &ret, int keywordFlag = 0)
     - `arg`为待分割字符串，函数执行后删除首子字符串；`ret`为返回值，为首子字符串
     - `keywordFlag`决定分隔符是否为`'|'`
     - 该函数功能包括鲁棒性处理
-- stringCheck(enum 字符串类型, string arg)
+- stringCheck(enum stringType, string arg)
   
     - 鲁棒性判断
-- privilegeCheck(int strict);
-- **init**() **初始化函数*
+- privilegeCheck(int restriction);
+- **init**() 
+    - 初始化函数 (非必须)
 
-
+### 功能函数
 
 - showFinance(int num)
     - 重载函数 showFinance()
@@ -47,11 +51,17 @@
 - log()
 - reportMyself()
 
+### 其他
+
+- 除块状链表 *(`UnrolledLinkedList.h/.cpp`)* 内容，本文档中所有类、函数及枚举均在`BookStore.h`中声明
+- *模板函数实现需在库文件 (`.h`) 中完成*
 
 
-# CommandManager`.h/.cpp`
+
+# CommandManager`.cpp`
 
 - **command 指令类**
+  
   - 指令参数	*(存储于`Data_Command.dat`)*
     | 变量内容            | 变量类型 |
     | ------------------- | -------- |
@@ -60,12 +70,18 @@
     | 用户名              | 字符数组 |
     | 执行情况(成功/失败) | 布尔     |
     | 操作时间(time())    | 长长整型 |
+  
 - runCommand(string arg)
+
+  - 对用户输入的指令进行处理并执行对应函数
+
 - recordCommand(command arg)
 
+  - 将指令存入`Data_Command.dat`文件
 
 
-# UserManager`.h/.cpp`
+
+# UserManager`.cpp`
 
 - **user 账号类**
     - 账号参数	*(`Data_User.dat`用)*
@@ -88,7 +104,7 @@
 
 
 
-# BookManager`.h/.cpp`
+# BookManager`.cpp`
 
 - **book 图书类**
     - 图书参数	*(`Data_Book.dat`用)*
@@ -96,10 +112,10 @@
         | ---- | ---- |
         | ISBN | 字符数组 max length: 20 |
         | name | 字符数组 max length: 60 |
-	    | author | 字符数组 max length: 60 |
-	    | keyword | 字符数组 max length: 60 |
-	    | price | 浮点数 |
-	    | quantity | 整形 |
+	| author | 字符数组 max length: 60 |
+	| keyword | 字符数组 max length: 60 |
+	| price | 浮点数 |
+	| quantity | 整形 |
 - select(string ISBN)
 - modify(string arg)
 - show(string arg)
@@ -112,9 +128,9 @@
         | time    | 长长整型 |
         | userID | 字符数组 max length: 30 |
         | ISBN | 字符数组 max length: 20 |
-	    | quantity *(正数表示购买，负数表示进货)* | 整形 |
-	    | price | 浮点数 |
-	    | totalPrice | 浮点数 |
+	| quantity *(正数表示购买，负数表示进货)* | 整形 |
+	| price | 浮点数 |
+	| totalPrice | 浮点数 |
 - import(int num, int price)
 - buy(string ISBN, int num)
 
@@ -123,10 +139,11 @@
 # UnrolledLinkedList`.h/.cpp`
 
 - **unrolledLinkedList 块状链表类**
-    - writeIndexData(string arg, int pointer, char type)
-      - 重载函数 writeIndexData(string oldArg, string newArg, int pointer, char type)
-    - readIndexData(string arg, char type)
-    - deleteUserIndexData(string userID)
+    - addElement(string arg, int pointer)
+    - rewriteElement(string oldArg, string newArg, int pointer)
+    - findElement(string arg)
+    - deleteElement(string userID)
+      - 该函数仅于删除账号时使用
 
 <!--注意此处仅列出了public函数，private中内容参考: string fileName, nextBlock函数, deleteBlock函数, mergeBlock函数, splitBlock函数, hash函数等-->
 
@@ -155,7 +172,7 @@ public:
 };
 ```
 
-# BasicFileManager`.h/.cpp`
+# BasicFileManager`.cpp`
 
 **以下函数使用模板函数实现**
 
@@ -164,9 +181,9 @@ public:
 - readBasicData(enum 参数类型, T arg)
 
 读写除`BasicData`外其他`Data_*.dat`文件
-- writeData(T arg, int offset = -1)
+- writeData(enum 参数类型, T arg, int offset = -1)
   - `offset`为`-1`表示在文件末追加写入，否则在指定位置覆盖写入
-- readData(int offset)
+- readData(enum 参数类型, int offset)
 
 
 
@@ -197,3 +214,8 @@ public:
 - **Index_Keyword**.dat
   - 以块状链表升序存储`keyword`的哈希值及该图书数据于`Data_Book.dat`中的位置
 
+
+# 补充
+
+- 本开发文档未经实现，如有疏漏错误之处还请谅解
+- 最后更新于`2021.1.19`
