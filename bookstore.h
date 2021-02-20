@@ -19,6 +19,7 @@
 #include "usermanager.h"
 
 //#define PaperL_Debug
+#define bonusFunction
 
 using namespace std;
 
@@ -134,6 +135,15 @@ public:
     Bookstore();
 
     void operation(string cmd);//记得判断权限
+
+#ifdef bonusFunction
+
+    void getInfo(int &privilege, string &userName) {
+        string temps;
+        user_cmd.getUserInfo(temps, userName, privilege);
+    }
+
+#endif
 
 };
 

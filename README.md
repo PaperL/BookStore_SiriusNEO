@@ -2,7 +2,7 @@
 
 - 20级ACM班大一第一次大作业完结撒花~
 
-- 虽然本程序依然有bug未修复
+- 本程序已在OJ上AC
 
 - 特别感谢`SiriusNEO`和`Lhtie`同学的帮助
 
@@ -28,4 +28,4 @@
 
 - 题面见[`Bookstore-2020`](https://github.com/cmd2001/Bookstore-2020)
 
-- 编码者PaperL写的开发文档见[`PaperL's BookStore文档`](https://github.com/PaperL/BookStore_SiriusNEO/blob/master/PaperL's%20BookStore.md)
+- 编码者`PaperL`写的开发文档见[`PaperL's BookStore文档`](https://github.com/PaperL/BookStore_SiriusNEO/blob/master/PaperL's%20BookStore.md)

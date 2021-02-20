@@ -16,6 +16,7 @@
 #include "blocklist.h"
 
 //#define PaperL_Debug
+#define bonusFunction
 
 using namespace std;
 
@@ -80,6 +81,21 @@ public:
 
     void del(string id);
 
+#ifdef bonusFunction
+
+    void getUserInfo(string &userID, string &userName, int &privilege) {
+        if (userNumber > 1) {
+            userID = userStack[userNumber - 1].id;
+            userName = userStack[userNumber - 1].name;
+            privilege = userStack[userNumber - 1].privilege;
+        } else {
+            userID = "Unauthenticated User";
+            userName.clear();
+            privilege = 0;
+        }
+    }
+
+#endif
 
 };
 
